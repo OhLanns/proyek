@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DAPUR AIZLAN</title>
-    <link rel="stylesheet" href="../aset/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../aset/style.css" />
+    <link rel="stylesheet" href="aset/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="aset/style.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
@@ -56,7 +56,7 @@
         ?>
 
 
-    <script src="../aset/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../aset/script.js"></script>
+    <script src="aset/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="aset/script.js"></script>
 </body>
 </html>
