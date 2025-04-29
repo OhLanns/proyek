@@ -1,0 +1,527 @@
+:root {
+  --primary: #f38e00;
+  --bg: rgb(255, 200, 0);
+}
+
+html,
+body {
+  margin: 0; /* Menghapus margin default */
+  padding: 0; /* Menghapus padding default */
+  overflow-x: hidden; /* Mencegah scroll horizontal */
+  overscroll-behavior: none; /* Mencegah efek bounce saat scroll */
+}
+
+body {
+  font-family: "poppins", sans-serif;
+  background-color: var(--bg);
+  color: black;
+}
+.navbar {
+  position: fixed; /* Membuat navbar tetap terlihat */
+  top: 0; /* Menempel di bagian atas */
+  z-index: 1030; /* Memastikan navbar berada di atas elemen lainnya */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Opsional: Memberikan bayangan */
+  width: 100%; /* Memastikan navbar memenuhi lebar layar */
+  border-bottom: 1px solid #000; /* Garis bawah navbar */
+}
+.navbar-nav .nav-link {
+  font-weight: bold; /* Membuat teks lebih tebal */
+  color: white !important; /* Warna teks putih */
+}
+.navbar-nav .nav-link:hover {
+  color: var(--bg) !important; /* Warna teks saat hover */
+}
+.profile-icon {
+  font-size: 2rem;
+  color: white;
+  margin-left: auto;
+}
+.navbar-brand {
+  font-size: 2rem; /* Ukuran font untuk logo */
+  font-weight: 700; /* Ketebalan font untuk logo */
+  color: #000; /* Warna teks untuk logo */
+  font-style: italic; /* Gaya font miring untuk logo */
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+}
+
+/* Untuk tampilan desktop */
+@media (min-width: 992px) {
+  .profile-container {
+    margin-left: auto; /* Dorong ikon profil ke kanan */
+  }
+}
+
+/* Untuk tampilan responsif */
+@media (max-width: 991.98px) {
+  .profile-container {
+    order: 1; /* Pastikan ikon profil berada di samping tombol hamburger */
+    margin-left: 0;
+  }
+}
+.navbar-nav .nav-link {
+  color: black !important; /* Mengubah warna teks menjadi hitam */
+}
+.navbar-nav .nav-link:hover {
+  color: var(--bg) !important; /* Warna saat hover */
+}
+.navbar {
+  padding: 1.2rem 1rem; /* Menambahkan padding untuk membuat header lebih besar */
+}
+.navbar-brand h3 {
+  font-size: 2rem; /* Membuat ukuran font nama brand lebih besar */
+}
+.navbar-nav .nav-link {
+  font-size: 1.2rem; /* Membuat ukuran font navigasi lebih besar */
+}
+.bi {
+  font-size: 2rem; /* Membuat ikon lebih besar */
+}
+.footer {
+  border-top: #000 solid 1px; /* Garis atas footer */
+}
+/* Hero Section */
+.hero {
+  background: url("../gambar/header gambar.jpg") no-repeat center center/cover;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Mengatur konten ke kiri */
+  position: relative;
+}
+.hero::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 28%;
+  bottom: 0;
+  background: linear-gradient(
+    0deg,
+    rgb(255, 200, 0) 8%,
+    rgba(235, 224, 4, 0) 40%
+  ); /* Adjusted gradient */
+}
+.hero .content {
+  color: white; /* Warna teks putih */
+  text-shadow: 1px 1px 3px #000000; /* Efek bayangan pada teks */
+  text-align: left; /* Mengatur teks rata kiri */
+  max-width: 800px; /* Membatasi lebar konten */
+  padding: 1.4rem 5%; /* Memberikan jarak dari sisi kiri */
+  position: relative; /* Memastikan posisi relatif terhadap elemen induk */
+  margin-left: 30px;
+}
+
+.hero .content h1 {
+  font-size: 4rem; /* Ukuran font untuk judul */
+  font-weight: bold; /* Membuat teks tebal */
+  margin-bottom: 1rem; /* Memberikan jarak bawah */
+  color: white; /* Warna teks putih */
+  text-align: left;
+}
+
+.hero .content h1 span {
+  color: var(--primary); /* Warna teks sesuai variabel primary */
+}
+
+.hero .content p {
+  font-size: 1.2rem; /* Ukuran font untuk paragraf */
+  margin-bottom: 2rem; /* Memberikan jarak bawah */
+  line-height: 1.6; /* Jarak antar baris */
+  color: white; /* Warna teks putih */
+  text-align: left;
+}
+
+.hero .btn {
+  font-size: 1.2rem; /* Ukuran font untuk tombol */
+  padding: 0.8rem 2rem; /* Padding tombol */
+  background-color: var(--primary); /* Warna tombol sesuai variabel primary */
+  color: white; /* Warna teks tombol */
+  border-radius: 15px; /* Membuat sudut tombol melengkung */
+  box-shadow: 1px 1px 3px #000000; /* Efek bayangan pada tombol */
+  text-decoration: none; /* Menghapus garis bawah pada tombol */
+  border: none;
+  float: left;
+  z-index: 10; /* Pastikan tombol berada di atas elemen lain */
+  position: relative; /* Tambahkan posisi relatif jika diperlukan */
+}
+
+/* About Section */
+.about {
+  background-color: rgb(255, 200, 0);
+  padding: 3rem 0;
+}
+
+.about h2 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--primary);
+  margin-bottom: 2rem;
+}
+
+.about img {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.about h3 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.about p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: hsl(0, 0%, 20%);
+}
+
+.row-about {
+  background-color: wheat;
+  padding: 20px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center; /* Center align items */
+  justify-content: center; /* Center align items */
+}
+
+#about {
+  scroll-margin-top: 80px; /* Memberikan jarak dari atas saat scroll */
+}
+.kontak {
+  margin-top: 8rem;
+}
+.kontak_container {
+  background-color: wheat;
+  border-radius: 15px;
+}
+.info-kontak a,
+.info-kontak p {
+  text-decoration: none;
+  color: black;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  display: block; /* Membuat setiap link berada di baris baru */
+}
+.maps {
+  padding-right: 10px;
+  padding-bottom: 20px;
+}
+
+.card-img-top {
+  height: 200px; /* Atur tinggi gambar */
+  object-fit: contain; /* Memastikan gambar tetap proporsional */
+  width: 100%; /* Pastikan gambar memenuhi lebar kartu */
+}
+
+.card-menu {
+  height: 100%; /* Pastikan kartu memenuhi tinggi kolom */
+  display: flex;
+  flex-direction: column; /* Mengatur elemen di dalam kartu secara vertikal */
+  justify-content: space-between; /* Memberikan jarak merata antara elemen */
+}
+
+.card-body {
+  flex-grow: 1; /* Memastikan bagian body kartu mengisi ruang yang tersedia */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Pastikan teks, harga, dan tombol sejajar */
+}
+
+.card-body .d-flex {
+  display: flex;
+  justify-content: space-between; /* Memastikan harga dan tombol sejajar secara horizontal */
+  align-items: center; /* Menyelaraskan harga dan tombol secara vertikal */
+  min-height: 50px; /* Menyamakan tinggi area harga dan tombol */
+}
+
+.card-text.harga {
+  margin: 0; /* Menghapus margin default */
+  font-size: 1rem; /* Ukuran font untuk harga */
+  font-weight: bold; /* Membuat harga lebih menonjol */
+}
+
+.button-beli {
+  background-color: var(--primary); /* Warna tombol sesuai variabel primary */
+  border: none; /* Menghapus border */
+  padding: 0.5rem 1rem; /* Padding tombol */
+  font-size: 0.9rem; /* Ukuran font tombol */
+  color: white; /* Warna teks tombol */
+  border-radius: 5px; /* Membuat sudut tombol melengkung */
+  cursor: pointer; /* Menambahkan kursor pointer */
+}
+
+.button-beli:hover {
+  background-color: #e67e00; /* Warna tombol saat hover */
+}
+.harga-beli {
+  margin-bottom: 200px;
+}
+
+/* Tombol "Beli" dengan kelas hidden */
+.hidden.button-beli {
+  background-color: var(
+    --primary
+  ); /* Warna tombol tetap sesuai variabel primary */
+  color: white; /* Warna teks tetap putih */
+  border: none; /* Menghapus border */
+  padding: 0.5rem 1rem; /* Padding tombol */
+  font-size: 0.9rem; /* Ukuran font tombol */
+  border-radius: 5px; /* Membuat sudut tombol melengkung */
+  cursor: pointer; /* Menambahkan kursor pointer */
+  opacity: 0; /* Awalnya tersembunyi */
+  transform: translateY(20px); /* Geser elemen ke bawah */
+  transition: opacity 0.5s ease, transform 0.5s ease; /* Animasi transisi */
+}
+
+/* Tombol "Beli" saat muncul */
+.show.button-beli {
+  opacity: 1; /* Tampilkan tombol */
+  transform: translateY(0); /* Kembalikan ke posisi semula */
+}
+
+/* Animasi untuk elemen yang muncul */
+.hidden {
+  opacity: 0;
+  transform: translateY(20px); /* Geser elemen ke bawah */
+  transition: opacity 0.5s ease, transform 1s ease; /* Animasi transisi */
+}
+
+.show {
+  opacity: 1;
+  transform: translateY(0); /* Kembalikan elemen ke posisi semula */
+}
+
+/* Keranjang Belanja Styles */
+.keranjang {
+  background-color: var(--bg);
+  min-height: 100vh;
+}
+
+.cart-item {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  transition: all 0.3s ease;
+}
+
+.cart-item:hover {
+  background-color: #f9f9f9;
+}
+
+.cart-item img {
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.cart-item:hover img {
+  transform: scale(1.05);
+}
+
+.remove-item {
+  transition: all 0.2s ease;
+}
+
+.remove-item:hover {
+  transform: scale(1.1);
+}
+
+#checkout-btn {
+  background-color: var(--primary);
+  border: none;
+  padding: 10px;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+#checkout-btn:hover {
+  background-color: #e67e00;
+  transform: translateY(-2px);
+}
+
+#checkout-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+/* Modal Konfirmasi Styles */
+.modal-content {
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  background-color: var(--primary);
+  color: white;
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+}
+
+.modal-footer {
+  border-top: none;
+  background-color: #f8f9fa;
+  border-radius: 0 0 10px 10px;
+}
+
+#confirmDeleteBtn {
+  background-color: #dc3545;
+  border: none;
+}
+
+#confirmDeleteBtn:hover {
+  background-color: #bb2d3b;
+}
+/* notif-menu*/
+/* Custom positioning for toast */
+.toast-container-menu {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1100;
+}
+
+/* Custom toast appearance */
+.custom-toast .toast-header {
+  background-color: var(--bg);
+  color: white;
+}
+
+.custom-toast .toast-body {
+  background-color: #f8f9fa;
+}
+
+/* notif-keranjang */
+/* Toast Notification Styles */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1100;
+}
+
+.toast-success {
+  border-left-color: #28a745;
+}
+
+.toast-error {
+  border-left-color: #dc3545;
+}
+
+.toast-info {
+  border-left-color: #17a2b8;
+}
+
+.toast-header {
+  font-weight: 600;
+}
+
+.toast-success .toast-header {
+  background-color: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+}
+
+.toast-error .toast-header {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+}
+
+.toast-body {
+  padding: 0.75rem 1rem;
+}
+
+/* Improved Cart Styles */
+.cart-item {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.cart-item:hover {
+  background-color: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.cart-item-img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.summary-item {
+  font-size: 0.9rem;
+}
+
+.summary-total {
+  color: var(--primary);
+}
+
+/* Custom Modal Styles */
+.custom-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.custom-modal-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.custom-modal-body {
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.custom-modal-footer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.custom-modal-btn {
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.custom-modal-btn-primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.custom-modal-btn-secondary {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.custom-modal-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
