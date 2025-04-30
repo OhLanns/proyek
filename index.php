@@ -39,6 +39,12 @@
             case 'keranjang':
                 include "page/keranjang.php";
                 break;
+            case 'login':
+                include "page/login.php";
+                break;
+            case 'sigin':
+                include "page/sigin.php";
+                break;
             case 'kontak':
                 include "page/kontak.php";
                 break;

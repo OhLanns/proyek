@@ -22,10 +22,10 @@
             class="bi bi-cart-fill me-3"
             style="font-size: 2rem; color: hsl(0, 0%, 10%)"
           ></i></a>
-          <i
-            class="bi bi-person-circle me-2"
+          <a href="index.php?halaman=login"><i
+            class="bi bi-person-circle me-2" 
             style="font-size: 2rem; color: hsl(0, 0%, 10%)"
-          ></i>
+          ></i></a>
           <!-- Hamburger Menu -->
           <button
             class="navbar-toggler"
