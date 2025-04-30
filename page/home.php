@@ -1,3 +1,4 @@
+<!-- Tambahkan di bagian <head> atau file CSS -->
 
     <!-- Hero Section -->
     <section class="hero" id="home">
@@ -34,4 +35,45 @@
             </div>
         </div>
     </section>
+    <!-- About Section -->
+    <section id="about" class="about py-6">
+        <div class="container">
+            <div class="row align-items-center row-about">
+
+        
+            <!-- Kiri: Judul -->
+            <div class="col-md-6 text-start Customer">
+                <h3>Apa Kata Customer kami?</h3>
+            </div>
+
+            <!-- Kanan: Carousel Testimoni -->
+                <div class="col-md-6">
+                    <h3>Kenapa harus Memilih Dapur Aizlan?</h3>
+                    <div id="carouselTestimoni" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+                    <div class="carousel-inner" style="min-height: 250px;">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <p>Udah keseringan order disini dan rasanya kwalitas tidak pernah mengecewakan...</p>
+                                <p>Saya doakan punya kedai dapur yg khusus dan tempat yang luas. Aamiin ya Allah...</p>
+                                <p><strong>Ade Trisnawat</strong></p>
+                            </div>
+                            <div class="carousel-item">
+                                <p>Semua menu dapur AizLan enak apalagi sambalnya bikin nagih.</p>
+                                <p><strong>Mahmudah HnM</strong></p>
+                            </div>
+                            <div class="carousel-item">
+                                <p>Masyaallah..</p>
+                                <p>Pokoknya mah selain murah, masakanya 
+                                    enak bangetttt, banyak menu resto harga
+                                    kaki lima.</p>
+                                <p><strong>Siti Aizatin Mardiyah</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
   
