@@ -47,9 +47,9 @@
             </div>
 
             <!-- Kanan: Carousel Testimoni -->
-                <div class="col-md-6">
+            <div class="col-md-6">
                     <h3>Kenapa harus Memilih Dapur Aizlan?</h3>
-                    <div id="carouselTestimoni" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+                <div id="carouselTestimoni" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
                     <div class="carousel-inner" style="min-height: 250px;">
                         <div class="carousel-inner">
                             <div class="carousel-item active">
@@ -71,7 +71,7 @@
                         </div>
                     </div>
                 </div>
-                </div>
+            </div>
             </div>
         </div>
     </section>
