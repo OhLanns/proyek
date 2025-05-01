@@ -23,7 +23,7 @@ include "../config.php";
         <div class="container">
             <h2 class="text-center mb-4 menukami"><b>Menu Kami</b></h2>
             <div class="d-flex align-items-center mb-4">
-            <a class="btn btn-primary hidden button-beli" href="create.php">Tambahkan menu</a>
+            <a class="btn btn-primary hidden button-beli" href="createmenu.php">Tambahkan menu</a>
             </div>
             <div class="row">
                 <?php               

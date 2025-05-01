@@ -15,9 +15,12 @@
     <!-- Toast Notification Container -->
     <div class="toast-container" id="notification-container"></div>
 
+    <div class="atas" style="height: 60px">
+
+    </div>
     <section class="keranjang py-5">
         <div class="container">
-            <h2 class="text-center mb-4">Keranjang Belanja</h2>
+            <h2 class="text-center mb-4"><b>Keranjang Belanja</b></h2>
             
             <div class="row">
                 <div class="col-md-8">
