@@ -52,7 +52,6 @@
         }
 
         include "template/footer.php";
-        echo " helo ";
         ?>
 
 
