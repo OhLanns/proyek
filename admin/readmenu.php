@@ -45,6 +45,9 @@ include "../config.php";
                                         <a class="btn btn-primary button-beli add-to-cart-btn hidden" href="updatemenu.php?id=' . $row["id"] . '">
                                             Edit
                                         </a>
+                                        <a class="btn btn-primary button-beli add-to-cart-btn hidden" href="deletemenu.php?id=' . $row["id"] . '">
+                                            delete
+                                        </a>
                                 </div>
                             </div>
                         </div>
