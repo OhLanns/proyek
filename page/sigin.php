@@ -15,7 +15,7 @@
                 <label for="password" class="form-label">Password</label>
                 <input type="password" name="password" class="form-control" required>
             </div>
-            <button type="submit" class="btn btn-warning w-100 mb-3">Daftar</button>
+            <button type="button" class="btn btn-warning w-100 mb-3" onclick="window.location.href='?halaman=login'">Daftar</button>
         </form>
     </div> 
 </div> 

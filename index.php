@@ -31,7 +31,16 @@
                 include "page/home.php";
                 break;
             case 'profile':
-                include "page/profile.php";
+                include "page/profile/profile1.php";
+                break;
+            case 'keamanan':
+                include "page/profile/keamanan.php";
+                break;
+            case 'alamat':
+                include "page/profile/alamat.php";
+                break;
+            case 'bank':
+                include "page/profile/bank.php";
                 break;
             case 'menu':
                 include "page/menu.php";

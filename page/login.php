@@ -11,11 +11,11 @@
                 <label for="username" class="form-label">Username</label>
                 <input type="text" name="username" class="form-control" required autofocus>
             </div>
-            <div class="mb-3">
+            <div class="mb-3"
                 <label for="password" class="form-label">Password</label>
                 <input type="password" name="password" class="form-control" required>
             </div>
-            <button type="submit" class="btn btn-warning w-100 mb-3">Login</button>
+            <button type="button" class="btn btn-warning w-100 mb-3" onclick="window.location.href='?halaman=profile'">Login</button>
             <div class="mb-3 d-flex justify-content-between">
                 <a href="lupa_password.php" class="text-decoration-none">Lupa kata sandi?</a>
             </div>
