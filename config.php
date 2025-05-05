@@ -1,16 +1,18 @@
 <?php
-    // Daftar menu dengan ID unik
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname ="catering";
+session_start();
 
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
+// Daftar menu dengan ID unik
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname ="catering";
 
-    // Check connection
-    if ($conn->connect_error) {
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
-    }
-    // echo "Connected successfully";
+}
+// echo "Connected successfully";
 ?>

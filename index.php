@@ -6,6 +6,7 @@
     <title>DAPUR AIZLAN</title>
     <link rel="stylesheet" href="aset/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="aset/style.css" />
+    <link rel="stylesheet" href="aset/style2.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
@@ -37,13 +38,23 @@
                 include "page/menu.php";
                 break;
             case 'keranjang':
-                include "page/keranjang.php";
+                if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+                    include "page/keranjang.php";
+                } else {
+                    // Simpan URL yang dituju sebelum redirect ke login
+                    $_SESSION['redirect_url'] = 'index.php?halaman=keranjang';
+                    header("Location: index.php?halaman=login");
+                    exit();
+                }
                 break;
             case 'login':
                 include "page/login.php";
                 break;
-            case 'sigin':
-                include "page/sigin.php";
+            case 'signup':
+                include "page/signup.php";
+                break;
+            case 'logout':
+                include "page/log_out.php";
                 break;
             case 'kontak':
                 include "page/kontak.php";

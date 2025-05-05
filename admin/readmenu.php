@@ -1,5 +1,37 @@
 <?php
 include "../config.php";
+// Display status messages
+if(isset($_GET['status'])) {
+    $status = $_GET['status'];
+    $message = '';
+    $type = '';
+    
+    switch($status) {
+        case 'deleted':
+            $message = 'Menu berhasil dihapus!';
+            $type = 'success';
+            break;
+        case 'delete_error':
+            $message = 'Gagal menghapus menu. Silakan coba lagi.';
+            $type = 'danger';
+            break;
+        case 'not_found':
+            $message = 'Menu tidak ditemukan.';
+            $type = 'warning';
+            break;
+        case 'invalid_id':
+            $message = 'ID menu tidak valid.';
+            $type = 'danger';
+            break;
+    }
+    if(!empty($message)) {
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                showToast('$message', '$type');
+            });
+        </script>";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
