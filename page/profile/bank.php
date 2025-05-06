@@ -89,7 +89,7 @@
 
     <div style="text-align: center;">
       <a href="?halaman=tambah_alamat" class="tambah-alamat-btn">
-        <i>+</i> Tambah No Rekening (Serakan Nama Banknya)
+        <i>+</i> Tambah No Rekening (Sertakan Nama Banknya)
       </a>
     </div>
 </div>
