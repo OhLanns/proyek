@@ -624,3 +624,16 @@ body {
       padding: 1.5rem;
   }
 }
+
+#login{
+  font-size: larger;
+  font-weight: 700;
+  background-color: var(--bg);
+  padding: 5px;
+  border: 2px solid black;
+}
+
+#login:hover{
+  color: var(--bg);
+  background-color: var(--bg) 70%;
+}

@@ -53,19 +53,19 @@
                     <div class="carousel-inner" style="min-height: 250px;">
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <p>Udah keseringan order disini dan rasanya kwalitas tidak pernah mengecewakan...</p>
-                                <p>Saya doakan punya kedai dapur yg khusus dan tempat yang luas. Aamiin ya Allah...</p>
+                                <p>"Udah keseringan order disini dan rasanya kwalitas tidak pernah mengecewakan...</p>
+                                <p>Saya doakan punya kedai dapur yg khusus dan tempat yang luas. Aamiin ya Allah..."</p>
                                 <p><strong>Ade Trisnawat</strong></p>
                             </div>
                             <div class="carousel-item">
-                                <p>Semua menu dapur AizLan enak apalagi sambalnya bikin nagih.</p>
+                                <p>"Semua menu dapur AizLan enak apalagi sambalnya bikin nagih."</p>
                                 <p><strong>Mahmudah HnM</strong></p>
                             </div>
                             <div class="carousel-item">
-                                <p>Masyaallah..</p>
+                                <p>"Masyaallah..</p>
                                 <p>Pokoknya mah selain murah, masakanya 
                                     enak bangetttt, banyak menu resto harga
-                                    kaki lima.</p>
+                                    kaki lima."</p>
                                 <p><strong>Siti Aizatin Mardiyah</strong></p>
                             </div>
                         </div>

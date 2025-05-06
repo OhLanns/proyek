@@ -1,5 +1,37 @@
 <?php
 include "../config.php";
+// Display status messages
+if(isset($_GET['status'])) {
+    $status = $_GET['status'];
+    $message = '';
+    $type = '';
+    
+    switch($status) {
+        case 'deleted':
+            $message = 'Menu berhasil dihapus!';
+            $type = 'success';
+            break;
+        case 'delete_error':
+            $message = 'Gagal menghapus menu. Silakan coba lagi.';
+            $type = 'danger';
+            break;
+        case 'not_found':
+            $message = 'Menu tidak ditemukan.';
+            $type = 'warning';
+            break;
+        case 'invalid_id':
+            $message = 'ID menu tidak valid.';
+            $type = 'danger';
+            break;
+    }
+    if(!empty($message)) {
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                showToast('$message', '$type');
+            });
+        </script>";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +55,7 @@ include "../config.php";
         <div class="container">
             <h2 class="text-center mb-4 menukami"><b>Menu Kami</b></h2>
             <div class="d-flex align-items-center mb-4">
-            <a class="btn btn-primary hidden button-beli" href="create.php">Tambahkan menu</a>
+            <a class="btn btn-primary hidden button-beli" href="createmenu.php">Tambahkan menu</a>
             </div>
             <div class="row">
                 <?php               
@@ -44,6 +76,9 @@ include "../config.php";
                                     <p class="card-text harga hidden"><strong>Rp ' . number_format($row["harga"], 0, ',', '.') . '</strong></p> 
                                         <a class="btn btn-primary button-beli add-to-cart-btn hidden" href="updatemenu.php?id=' . $row["id"] . '">
                                             Edit
+                                        </a>
+                                        <a class="btn btn-primary button-beli add-to-cart-btn hidden" href="deletemenu.php?id=' . $row["id"] . '">
+                                            delete
                                         </a>
                                 </div>
                             </div>
