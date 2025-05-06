@@ -64,9 +64,9 @@
   <div class="pengaturan-container">
     <div class="section-header">Pengaturan Akun</div>
 
-    <div class="menu-item" onclick="window.location.href='?halaman=keamanan'">Keamanan & Akun <span>&gt;</span></div>
-    <div class="menu-item" onclick="window.location.href='?halaman=alamat'">Alamat Saya <span>&gt;</span></div>
-    <div class="menu-item" onclick="window.location.href='?halaman=bank'">Kartu / Rekening Bank <span>&gt;</span></div>
+    <div class="menu-item" onclick="window.location.href='?halaman=keamanan'">Keamanan & Akun </div>
+    <div class="menu-item" onclick="window.location.href='?halaman=alamat'">Alamat Saya </div>
+    <div class="menu-item" onclick="window.location.href='?halaman=bank'">Kartu / Rekening Bank </div>
 
     <div class="action-buttons">
       <button class="btn btn-light border">Ganti Akun</button>

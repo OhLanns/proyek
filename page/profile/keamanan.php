@@ -52,10 +52,10 @@
   <div class="pengaturan-container">
     <div class="section-header">Keamanan & Akun</div>
 
-    <div class="menu-item" onclick="window.location.href='?halaman=username'">Username <span>&gt;</span></div>
-    <div class="menu-item" onclick="window.location.href='?halaman=nomer'">No.Handphone <span>&gt;</span></div>
-    <div class="menu-item" onclick="window.location.href='?halaman=email'">Email <span>&gt;</span></div>
-    <div class="menu-item"onclick="window.location.href='?halaman=password'">Ganti Password <span>&gt;</span></div>
+    <div class="menu-item" onclick="window.location.href='?halaman=username'">Username </div>
+    <div class="menu-item" onclick="window.location.href='?halaman=nomer'">No.Handphone </div>
+    <div class="menu-item" onclick="window.location.href='?halaman=email'">Email </div>
+    <div class="menu-item"onclick="window.location.href='?halaman=password'">Ganti Password </div>
   </div>
 
 </body>

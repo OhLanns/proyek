@@ -85,7 +85,7 @@
 
   <div class="form-container">
     <div class="input-group">
-      <span>&#128100;</span>
+    <span>&#9742;</span>
       <input type="text" placeholder="ketik no handphonemu">
     </div>
   </div>

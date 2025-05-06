@@ -85,7 +85,7 @@
 
   <div class="form-container">
     <div class="input-group">
-      <span>&#128100;</span>
+    <span>&#9993;</span>
       <input type="text" placeholder="ketik emailmu">
     </div>
   </div>
