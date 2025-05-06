@@ -28,7 +28,7 @@
             <button type="submit" class="btn btn-warning w-100 mb-3">Masuk</button>
 >>>>>>> 241b444d7d2e8b72609f509d4dce404a311a5d2c
             <div class="mb-3 d-flex justify-content-between">
-                <a href="lupa_password.php" class="text-decoration-none">Lupa kata sandi?</a>
+                <a href="?halaman=password" class="text-decoration-none">Lupa kata sandi?</a>
             </div>
         </form>
 
