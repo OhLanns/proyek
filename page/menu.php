@@ -1,4 +1,6 @@
-
+<?php
+$logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +13,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap" rel="stylesheet" />
     <style>
-        
     /* Menghilangkan spinner pada input number */
     .quantity-input::-webkit-outer-spin-button,
     .quantity-input::-webkit-inner-spin-button {
@@ -48,10 +49,10 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             padding: 5px;
-            -webkit-appearance: none; /* Menghilangkan spinner di Safari */
-            -moz-appearance: textfield; /* Menghilangkan spinner di Firefox */
-            appearance: none; /* Menghilangkan spinner di browser modern */
-            margin: 0; /* Menghilangkan margin default */
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+            appearance: none;
+            margin: 0;
         }
         
         .add-to-cart-btn {
@@ -113,7 +114,6 @@
     <script>
         // Fungsi untuk menampilkan toast notifikasi
         function showToast(message) {
-            // Buat elemen toast
             const toastContainer = document.querySelector('.toast-container-menu');
             const toastId = 'toast-' + Date.now();
             
@@ -132,12 +132,10 @@
             
             toastContainer.insertAdjacentHTML('beforeend', toastHTML);
             
-            // Inisialisasi dan tampilkan toast
             const toastElement = document.getElementById(toastId);
             const toast = new bootstrap.Toast(toastElement);
             toast.show();
             
-            // Hapus toast dari DOM setelah hilang
             toastElement.addEventListener('hidden.bs.toast', function() {
                 toastElement.remove();
             });
@@ -179,6 +177,16 @@
 
         // Fungsi untuk menambahkan item ke keranjang
         function addToCart(id, name, price) {
+        <?php if (!$logged_in): ?>
+            // Simpan URL dan tandai bahwa ini berasal dari tombol beli
+            fetch('save_redirect.php?url=index.php?halaman=menu&from=beli')
+                .then(() => {
+                    window.location.href = 'index.php?halaman=login';
+                });
+            return;
+        <?php endif; ?>
+    
+            
             const quantity = getQuantity(id);
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
             let existingItem = cart.find(item => item.id === id);
