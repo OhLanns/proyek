@@ -3,42 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Username Form</title>
+  <title>Pengaturan dan Akun</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #F5F5F5;
+      background-color: #D3D3D3;
     }
 
-    .header {
-      background-color: #FFA500;
-      color: black;
-      padding: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: bold;
-      font-size: 20px;
-    }
-
-    .header .back {
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-    .header .check {
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-    .form-container {
+    .form-container-nomer {
       background-color: #FFA500;
       padding: 20px;
-      margin-top: 20px;
+      margin-top: 80px;
+      border-radius: 12px;
+      min-height: 400px;
     }
 
-    .input-group {
+    .input-group-nomer {
       background-color: white;
       display: flex;
       align-items: center;
@@ -47,24 +28,24 @@
       margin-bottom: 20px;
     }
 
-    .input-group input {
+    .input-group-nomer input {
       border: none;
       flex: 1;
       padding: 8px;
       font-size: 16px;
     }
 
-    .input-group span {
+    .input-group-nomer span {
       margin-right: 10px;
     }
 
-    .button-container {
+    .button-container-nomer {
       background-color: #D3D3D3;
       padding: 40px;
       text-align: center;
     }
 
-    .btn-confirm {
+    .btn-confirm-nomer {
       background-color: white;
       color: black;
       padding: 10px 24px;
@@ -77,21 +58,15 @@
 </head>
 <body>
 
-  <div class="header">
-    <div class="back">&#8592;</div>
-    <div>Username</div>
-    <div class="check">&#10004;</div>
-  </div>
-
-  <div class="form-container">
-    <div class="input-group">
+  <div class="form-container-nomer">
+    <div class="input-group-nomer">
     <span>&#9742;</span>
       <input type="text" placeholder="ketik no handphonemu">
     </div>
   </div>
 
-  <div class="button-container">
-    <button class="btn-confirm">Konfirmasi</button>
+  <div class="button-container-nomer">
+    <button class="btn-confirm-nomer">Konfirmasi</button>
   </div>
 
 </body>

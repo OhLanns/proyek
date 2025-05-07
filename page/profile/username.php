@@ -8,37 +8,18 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #F5F5F5;
+      background-color: #D3D3D3;
     }
 
-    .header {
-      background-color: #FFA500;
-      color: black;
-      padding: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: bold;
-      font-size: 20px;
-    }
-
-    .header .back {
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-    .header .check {
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-    .form-container {
+    .form-container-username {
       background-color: #FFA500;
       padding: 20px;
-      margin-top: 20px;
+      margin-top: 80px;
+      border-radius: 12px;
+      min-height: 400px;
     }
 
-    .input-group {
+    .input-group-username {
       background-color: white;
       display: flex;
       align-items: center;
@@ -47,24 +28,23 @@
       margin-bottom: 20px;
     }
 
-    .input-group input {
+    .input-group-username input {
       border: none;
       flex: 1;
       padding: 8px;
       font-size: 16px;
     }
 
-    .input-group span {
+    .input-group-username span {
       margin-right: 10px;
     }
 
-    .button-container {
-      background-color: #D3D3D3;
+    .button-container-username {
       padding: 40px;
       text-align: center;
     }
 
-    .btn-confirm {
+    .btn-confirm-username {
       background-color: white;
       color: black;
       padding: 10px 24px;
@@ -76,22 +56,16 @@
   </style>
 </head>
 <body>
-
-  <div class="header">
-    <div class="back">&#8592;</div>
-    <div>Username</div>
-    <div class="check">&#10004;</div>
-  </div>
-
-  <div class="form-container">
-    <div class="input-group">
+   
+  <div class="form-container-username">
+    <div class="input-group-username">
       <span>&#128100;</span>
       <input type="text" placeholder="ketik username mu">
     </div>
   </div>
 
-  <div class="button-container">
-    <button class="btn-confirm">Konfirmasi</button>
+  <div class="button-container-username">
+    <button class="btn-confirm-username">Konfirmasi</button>
   </div>
 
 </body>
