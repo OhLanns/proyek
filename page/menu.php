@@ -178,11 +178,7 @@ $logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
         // Fungsi untuk menambahkan item ke keranjang
         function addToCart(id, name, price) {
         <?php if (!$logged_in): ?>
-            // Simpan URL dan tandai bahwa ini berasal dari tombol beli
-            fetch('save_redirect.php?url=index.php?halaman=menu&from=beli')
-                .then(() => {
-                    window.location.href = 'index.php?halaman=login';
-                });
+            window.location.href = 'index.php?halaman=login&need_login=1';
             return;
         <?php endif; ?>
     

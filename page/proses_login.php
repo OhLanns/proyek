@@ -17,22 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
             
-            // Tentukan redirect URL
-            $redirect_url = 'index.php?halaman=home'; // Default
-            
-             if (isset($_SESSION['redirect_url'])) {
-                // Jika berasal dari tombol beli, arahkan ke menu
-                if (isset($_SESSION['from_beli']) && $_SESSION['from_beli'] === true) {
-                    $redirect_url = 'index.php?halaman=menu';
-                } else {
-                    $redirect_url = $_SESSION['redirect_url'];
-                }
-                
-                unset($_SESSION['redirect_url']);
-                unset($_SESSION['from_beli']);
-            }
-
-            header("Location:../" . $redirect_url);
+            // SELALU redirect ke home setelah login
+            header("Location: ../index.php?halaman=home");
             exit();
         } else {
             $_SESSION['login_error'] = "Password salah";

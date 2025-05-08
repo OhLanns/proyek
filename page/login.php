@@ -9,18 +9,8 @@
             </div>
         <?php endif; ?>
 
-        <?php if (isset($_SESSION['redirect_url'])): ?>
-            <div class="alert alert-info">
-                <?php 
-                if (isset($_SESSION['from_beli']) && $_SESSION['from_beli'] === true) {
-                    echo "Silakan login terlebih dahulu untuk membeli produk ini";
-                } elseif (strpos($_SESSION['redirect_url'], 'keranjang') !== false) {
-                    echo "Silakan login terlebih dahulu untuk mengakses keranjang belanja";
-                } else {
-                    echo "Silakan login terlebih dahulu untuk melanjutkan";
-                }
-                ?>
-            </div>
+        <?php if (isset($_GET['need_login'])): ?>
+            <div class="alert alert-info">Silakan login terlebih dahulu untuk melanjutkan.</div>
         <?php endif; ?>
 
         <form action="page/proses_login.php" method="POST">
@@ -34,7 +24,7 @@
             </div>
             <button type="submit" class="btn btn-warning w-100 mb-3">Masuk</button>
             <div class="mb-3 d-flex justify-content-between">
-                <a href="?halaman=password" class="text-decoration-none">Lupa kata sandi?</a>
+                <a href="?halaman=lupa_password" class="text-decoration-none">Lupa kata sandi?</a>
             </div>
         </form>
 

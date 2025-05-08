@@ -34,6 +34,9 @@
             case 'profile':
                 include "page/profile/profile1.php";
                 break;
+            case 'delete_akun':
+                include "page/profile/delete.php";
+                break;
             case 'keamanan':
                 include "page/profile/keamanan.php";
                 break;
@@ -62,9 +65,8 @@
                 if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
                     include "page/keranjang.php";
                 } else {
-                    // Simpan URL yang dituju sebelum redirect ke login
-                    $_SESSION['redirect_url'] = 'index.php?halaman=keranjang';
-                    header("Location: index.php?halaman=login");
+                    // Redirect langsung ke login TANPA menyimpan URL keranjang
+                    header("Location: index.php?halaman=login&need_login=1");
                     exit();
                 }
                 break;
@@ -82,6 +84,12 @@
                 break;
             case 'about':
                 include "page/home#about.php";
+                break;
+            case 'lupa_password':
+                include "page/lupa_password.php";
+                break;
+            case 'reset_password':
+                include "page/reset_password.php";
                 break;
             default:
                 // Jika parameter tidak cocok, tampilkan halaman 404 atau home

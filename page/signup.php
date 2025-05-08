@@ -24,7 +24,7 @@
                 <input type="email" name="email" class="form-control" required>
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
+                <label for="password" class="form-label">Password (min 6 karakter)</label>
                 <input type="password" name="password" class="form-control" required>
             </div>
             <div class="mb-3">
