@@ -135,7 +135,7 @@
     }
     ?>
     <div class="user-actions mt-3">
-        <a href="page/profile/update.php" class="btn btn-warning btn-sm">Edit Akun</a>
+        <a href="index.php?halaman=update_akun" class="btn btn-warning btn-sm">Edit Akun</a>
         <a href="index.php?halaman=delete_akun" class="btn btn-danger btn-sm">Hapus Akun</a>
     </div>
 

@@ -37,6 +37,9 @@
             case 'delete_akun':
                 include "page/profile/delete.php";
                 break;
+            case 'update_akun';
+                include "page/profile/update.php";
+                break;
             case 'keamanan':
                 include "page/profile/keamanan.php";
                 break;

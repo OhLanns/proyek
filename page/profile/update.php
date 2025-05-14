@@ -1,5 +1,4 @@
 <?php
-include "../../config.php";
 
 // Cek apakah user sudah login
 if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
@@ -133,7 +132,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             
             <button type="submit" class="btn btn-primary w-100">Simpan Perubahan</button>
-            <a href="../profile1.php" class="btn btn-light w-100 mt-2">Kembali</a>
+            <a href="../../index.php?halaman=profile" class="btn btn-light w-100 mt-2">Kembali</a>
         </form>
     </div>
 

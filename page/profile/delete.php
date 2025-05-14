@@ -98,6 +98,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     </style>
 </head>
 <body>
+    
     <div class="delete-container">
         <div class="section-header">Hapus Akun</div>
         

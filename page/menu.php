@@ -1,6 +1,6 @@
 <?php
 $logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
-?>
+$user_id = $logged_in ? $_SESSION['user_id'] : null;?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -177,46 +177,60 @@ $logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 
         // Fungsi untuk menambahkan item ke keranjang
         function addToCart(id, name, price) {
-        <?php if (!$logged_in): ?>
-            window.location.href = 'index.php?halaman=login&need_login=1';
-            return;
-        <?php endif; ?>
-    
+            <?php if (!$logged_in): ?>
+                window.location.href = 'index.php?halaman=login&need_login=1';
+                return;
+            <?php endif; ?>
             
             const quantity = getQuantity(id);
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let existingItem = cart.find(item => item.id === id);
             
-            if (existingItem) {
-                existingItem.quantity += quantity;
-            } else {
-                cart.push({
-                    id: id,
-                    name: name,
-                    price: price,
+            // Kirim data ke server
+            fetch('page/add_to_cart.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    menu_id: id,
                     quantity: quantity
-                });
-            }
-            
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-            
-            // Tampilkan toast notifikasi
-            showToast(`${name} (${quantity}x) telah ditambahkan ke keranjang`);
-            
-            // Reset quantity ke 1 setelah menambahkan ke keranjang
-            document.getElementById('quantity-' + id).value = 1;
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast(`${name} (${quantity}x) telah ditambahkan ke keranjang`);
+                    document.getElementById('quantity-' + id).value = 1;
+                    updateCartCount();
+                } else {
+                    showToast(data.message || 'Gagal menambahkan ke keranjang');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Terjadi kesalahan saat menambahkan ke keranjang');
+            });
         }
         
         // Fungsi untuk memperbarui jumlah item di keranjang
         function updateCartCount() {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-            let cartCountElement = document.getElementById('cart-count');
-            if (cartCountElement) {
-                cartCountElement.textContent = totalItems;
-            }
+            <?php if ($logged_in): ?>
+                fetch('page/get_cart_count.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const cartCountElement = document.getElementById('cart-count');
+                            if (cartCountElement) {
+                                cartCountElement.textContent = data.count;
+                            }
+                        }
+                    });
+            <?php endif; ?>
         }
+        
+        // Panggil updateCartCount saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+        });
     </script>
 </body>
 </html>
