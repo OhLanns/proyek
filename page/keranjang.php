@@ -1,3 +1,11 @@
+<?php
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: index.php?halaman=login");
+    exit();
+}
+$user_id = $_SESSION['user_id'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,12 +72,6 @@
     </div>
 
     <script>
-        // Data gambar menu
-        const menuImages = {
-            1: "1.jpg", 2: "2.jpg", 3: "3.jpg", 4: "4.jpg", 5: "5.jpg",
-            6: "6.jpg", 7: "7.jpg", 8: "8.jpg", 9: "9.jpg", 10: "10.jpg",
-            11: "11.jpg", 12: "12.jpg"
-        };
     // Custom confirmation modal
     const customConfirmModal = document.getElementById('customConfirmModal');
     const customConfirmMessage = document.getElementById('customConfirmMessage');
@@ -143,37 +145,55 @@
         }
 
         // Fungsi untuk memuat keranjang
-        function loadCart() {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let cartItemsContainer = document.getElementById('cart-items');
-            let orderSummaryContainer = document.getElementById('order-summary');
-            let checkoutBtn = document.getElementById('checkout-btn');
+         function loadCart() {
+            fetch('page/get_cart_items.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        renderCart(data.items);
+                    } else {
+                        showEmptyCart();
+                    }
+                });
+        }
+
+        // Fungsi untuk menampilkan keranjang kosong
+        function showEmptyCart() {
+            document.getElementById('cart-items').innerHTML = 
+                '<div class="text-center py-4"><i class="bi bi-cart-x fs-1 text-muted"></i><p class="mt-2 text-muted">Keranjang belanja kosong</p></div>';
+            document.getElementById('order-summary').innerHTML = 
+                '<p class="text-muted">Belum ada item dalam keranjang</p>';
+            document.getElementById('checkout-btn').disabled = true;
+        }
+
+        // Fungsi untuk merender item keranjang
+        function renderCart(items) {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const orderSummaryContainer = document.getElementById('order-summary');
+            const checkoutBtn = document.getElementById('checkout-btn');
             
-            if (cart.length === 0) {
-                cartItemsContainer.innerHTML = '<div class="text-center py-4"><i class="bi bi-cart-x fs-1 text-muted"></i><p class="mt-2 text-muted">Keranjang belanja kosong</p></div>';
-                orderSummaryContainer.innerHTML = '<p class="text-muted">Belum ada item dalam keranjang</p>';
-                checkoutBtn.disabled = true;
+            if (items.length === 0) {
+                showEmptyCart();
                 return;
             }
             
-            // Render item keranjang
             let cartItemsHTML = '';
             let subtotal = 0;
             
-            cart.forEach(item => {
-                let itemTotal = item.price * item.quantity;
+            items.forEach(item => {
+                let itemTotal = item.harga * item.quantity;
                 subtotal += itemTotal;
                 
                 cartItemsHTML += `
                     <div class="cart-item p-3 mb-3 bg-white" data-id="${item.id}">
                         <div class="d-flex align-items-center">
-                            <img src="../gambar/menu/${menuImages[item.id]}" 
-                                 alt="${item.name}" 
+                            <img src="../gambar/menu/${item.img}" 
+                                 alt="${item.judul}" 
                                  class="cart-item-img me-3">
                             <div class="flex-grow-1">
-                                <h6 class="mb-1 fw-bold">${item.name}</h6>
+                                <h6 class="mb-1 fw-bold">${item.judul}</h6>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-muted">Rp ${item.price.toLocaleString('id-ID')} × ${item.quantity}</span>
+                                    <span class="text-muted">Rp ${item.harga.toLocaleString('id-ID')} × ${item.quantity}</span>
                                     <span class="fw-bold">Rp ${itemTotal.toLocaleString('id-ID')}</span>
                                 </div>
                             </div>
@@ -218,63 +238,57 @@
             });
         }
 
-            //  fungsi confirmDelete
-    async function confirmDelete(id) {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let item = cart.find(item => item.id === id);
-        
-        if (!item) return;
-        
-        const confirmed = await showCustomConfirm(`Yakin ingin menghapus ${item.name} dari keranjang?`, 'Hapus Item');
-        
-        if (confirmed) {
-            cart = cart.filter(item => item.id !== id);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            loadCart();
-            updateCartCount();
-            showToast(`"${item.name}" dihapus dari keranjang`, 'success');
+        // Fungsi untuk konfirmasi penghapusan
+        async function confirmDelete(itemId) {
+            const confirmed = await showCustomConfirm('Yakin ingin menghapus item ini dari keranjang?', 'Hapus Item');
+            
+            if (confirmed) {
+                fetch('page/remove_from_cart.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        menu_id: itemId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadCart();
+                        updateCartCount();
+                        showToast('Item dihapus dari keranjang');
+                    } else {
+                        showToast('Gagal menghapus item', 'error');
+                    }
+                });
+            }
         }
-    }
 
-    // fungsi checkout
-async function checkout() {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    if (cart.length === 0) return;
-    
-    let subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    let total = subtotal * 1.11;
-    
-    const confirmed = await showCustomConfirm(
-        `Lanjutkan checkout dengan total Rp ${total.toLocaleString('id-ID')}?`,
-        'Konfirmasi Checkout'
-    );
-    
-    if (confirmed) {
-        localStorage.removeItem('cart');
-        loadCart();
-        updateCartCount();
-        showToast(
-            `Checkout berhasil!<br>Total: Rp ${total.toLocaleString('id-ID')}`,
-            'success',
-            3000
-        );
-    }
-}
-        // Fungsi untuk memperbarui jumlah item di keranjang
-        function updateCartCount() {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-            let cartCountElement = document.getElementById('cart-count');
-            if (cartCountElement) {
-                cartCountElement.textContent = totalItems;
+        // Fungsi untuk checkout
+        async function checkout() {
+            const confirmed = await showCustomConfirm('Lanjutkan proses checkout?', 'Konfirmasi Checkout');
+            
+            if (confirmed) {
+                fetch('page/checkout.php', {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showToast('Checkout berhasil!', 'success');
+                        loadCart();
+                        updateCartCount();
+                    } else {
+                        showToast('Gagal checkout: ' + data.message, 'error');
+                    }
+                });
             }
         }
 
         // Inisialisasi saat halaman dimuat
         document.addEventListener('DOMContentLoaded', function() {
             loadCart();
-            
-            // Event listener untuk tombol checkout
             document.getElementById('checkout-btn').addEventListener('click', checkout);
         });
     </script>

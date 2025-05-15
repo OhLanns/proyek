@@ -31,8 +31,17 @@
             case 'home':
                 include "page/home.php";
                 break;
+            case 'ganti_password':
+                include "page/profile/password.php";
+                break;
             case 'profile':
                 include "page/profile/profile1.php";
+                break;
+            case 'delete_akun':
+                include "page/profile/delete.php";
+                break;
+            case 'update_akun';
+                include "page/profile/update.php";
                 break;
             case 'keamanan':
                 include "page/profile/keamanan.php";
@@ -58,13 +67,27 @@
             case 'menu':
                 include "page/menu.php";
                 break;
+            case "admin_menu":
+                include "admin/menu_admin/readmenu.php";
+                break;
+            case "admin_tambahmenu":
+                include "admin/menu_admin/createmenu.php";
+                break;
+            case "admin_deletemenu":
+                include "admin/menu_admin/deletemenu.php";
+                break;
+            case "admin_updatemenu":
+                include " admin/menu_admin/updatemenu.php";
+                break;
+            case "home_admin":
+                include "admin/home_admin.php";
+                break;
             case 'keranjang':
                 if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
                     include "page/keranjang.php";
                 } else {
-                    // Simpan URL yang dituju sebelum redirect ke login
-                    $_SESSION['redirect_url'] = 'index.php?halaman=keranjang';
-                    header("Location: index.php?halaman=login");
+                    // Redirect langsung ke login TANPA menyimpan URL keranjang
+                    header("Location: index.php?halaman=login&need_login=1");
                     exit();
                 }
                 break;
@@ -83,12 +106,17 @@
             case 'about':
                 include "page/home#about.php";
                 break;
+            case 'lupa_password':
+                include "page/lupa_password.php";
+                break;
+            case 'reset_password':
+                include "page/reset_password.php";
+                break;
             default:
                 // Jika parameter tidak cocok, tampilkan halaman 404 atau home
                 include "page/home.php";
                 break;
         }
-
         include "template/footer.php";
         ?>
 
