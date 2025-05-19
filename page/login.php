@@ -14,16 +14,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['logged_in'] = true;
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
-            $_SESSION['role'] =$user['role'];
             
             // SELALU redirect ke home setelah login
-            if($_SESSION['role']==='admin'){
-              header("location: ../admin/index.php?page=home");
-              exit();   
-            }else{
             header("Location: ../index.php?halaman=home");
             exit();
-            }
         } else {
             $_SESSION['login_error'] = "Password salah";
         }
@@ -52,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="alert alert-info">Silakan login terlebih dahulu untuk melanjutkan.</div>
         <?php endif; ?>
 
-        <form method="POST">
+        <form action="page/proses_login.php" method="POST">
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" name="username" class="form-control" required autofocus>

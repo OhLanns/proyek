@@ -15,6 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (strlen($new_password) < 6) {
         $message = "Password baru harus minimal 6 karakter";
         $message_type = "danger";
+    } elseif (!preg_match('/[A-Za-z]/', $new_password) || !preg_match('/[0-9]/', $new_password)) {
+        $message = "Password baru harus mengandung huruf dan angka";
+        $message_type = "danger";
     } elseif ($new_password !== $confirm_password) {
         $message = "Konfirmasi password tidak cocok";
         $message_type = "danger";
@@ -65,56 +68,81 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Ganti Password</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Username Form</title>
   <style>
     body {
-      background-color: #f5f5f5;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #F5F5F5;
     }
-    
-    .password-container {
-      max-width: 500px;
-      margin: 30px auto;
-      background-color: #fff;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+    .header {
+      background-color: #FFA500;
+      color: black;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .header .back {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .header .check {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .form-container {
+      background-color: #FFA500;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .form-container1 {
+      background-color: #FFA500;
       padding: 20px;
     }
-    
-    .section-header {
-      background-color: orange;
-      padding: 15px;
-      border-radius: 8px 8px 0 0;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #000;
-      text-align: center;
-      margin-bottom: 16px;
-    }
-    
-    .form-group {
+
+    .input-group {
+      background-color: white;
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-radius: 5px;
       margin-bottom: 20px;
     }
-    
-    .btn-submit {
-      background-color: orange;
+
+    .input-group input {
+      border: none;
+      flex: 1;
+      padding: 8px;
+      font-size: 16px;
+    }
+
+    .input-group span {
+      margin-right: 10px;
+    }
+
+    .button-container {
+      background-color: #D3D3D3;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .btn-confirm {
+      background-color: white;
       color: black;
+      padding: 10px 24px;
+      border-radius: 20px;
       font-weight: bold;
       border: none;
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-    }
-    
-    .btn-submit:hover {
-      background-color: #e68a00;
-    }
-    
-    .back-link {
-      display: block;
-      text-align: center;
-      margin-top: 15px;
-      color: #555;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -142,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       <div class="form-group">
         <label for="new_password">Password Baru</label>
         <input type="password" class="form-control" id="new_password" name="new_password" required>
-        <small class="text-muted">Minimal 6 karakter</small>
+        <small class="text-muted">Minimal 6 karakter, mengandung huruf dan angka</small>
       </div>
       
       <div class="form-group">
@@ -162,6 +190,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php endif; ?>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

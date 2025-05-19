@@ -78,17 +78,6 @@
       font-weight: bold;
       border-radius: 8px;
     }
-
-    .btn-disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-    }
-
-    .tooltip-inner {
-      max-width: 300px;
-      padding: 8px 16px;
-      background-color: #dc3545;
-    }
   </style>
 </head>
 <body>
@@ -97,6 +86,7 @@
     <div class="section-header">Pengaturan Akun</div>
 
     <?php
+    
     // Cek apakah user sudah login
     if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
         // Ambil user_id dari session
@@ -108,15 +98,6 @@
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
         $result = $stmt->get_result();
-        
-        // Periksa apakah ada item di keranjang
-        $sql_cart = "SELECT COUNT(*) as count FROM cart WHERE user_id = ?";
-        $stmt_cart = $conn->prepare($sql_cart);
-        $stmt_cart->bind_param("i", $user_id);
-        $stmt_cart->execute();
-        $result_cart = $stmt_cart->get_result();
-        $cart_count = $result_cart->fetch_assoc()['count'];
-        $stmt_cart->close();
         
         if($result->num_rows > 0) {
             $user = $result->fetch_assoc();
@@ -155,18 +136,12 @@
     ?>
     <div class="user-actions mt-3">
         <a href="index.php?halaman=update_akun" class="btn btn-warning btn-sm">Edit Akun</a>
-        <a href="index.php?halaman=ganti_password" class="btn btn-warning btn-sm">Ganti Password</a>
-        <?php if($cart_count > 0): ?>
-            <a href="#" class="btn btn-danger btn-sm btn-disabled" 
-               data-bs-toggle="tooltip" 
-               data-bs-placement="top" 
-               title="Anda tidak dapat menghapus akun saat masih memiliki pesanan di keranjang">
-                Hapus Akun
-            </a>
-        <?php else: ?>
-            <a href="index.php?halaman=delete_akun" class="btn btn-danger btn-sm">Hapus Akun</a>
-        <?php endif; ?>
+        <a href="index.php?halaman=delete_akun" class="btn btn-danger btn-sm">Hapus Akun</a>
     </div>
+
+    <!-- <div class="menu-item" onclick="window.location.href='?halaman=keamanan'">Keamanan & Akun <i class="bi bi-chevron-right"></i></div>
+    <div class="menu-item" onclick="window.location.href='?halaman=alamat'">Alamat Saya <i class="bi bi-chevron-right"></i></div>
+    <div class="menu-item" onclick="window.location.href='?halaman=bank'">Kartu / Rekening Bank <i class="bi bi-chevron-right"></i></div> -->
 
     <div class="action-buttons">
       <a href="index.php?halaman=login"><button class="btn btn-light border">Ganti Akun</button></a>
@@ -175,14 +150,5 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Inisialisasi tooltip
-    document.addEventListener('DOMContentLoaded', function() {
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
-    });
-  </script>
 </body>
 </html>

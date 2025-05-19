@@ -32,9 +32,6 @@
             case 'home':
                 include "page/home.php";
                 break;
-            case 'ganti_password':
-                include "page/profile/password.php";
-                break;
             case 'profile':
                 include "page/profile/profile1.php";
                 break;
@@ -67,21 +64,6 @@
                 break;
             case 'menu':
                 include "page/menu.php";
-                break;
-            case "admin_menu":
-                include "admin/menu_admin/readmenu.php";
-                break;
-            case "admin_tambahmenu":
-                include "admin/menu_admin/createmenu.php";
-                break;
-            case "admin_deletemenu":
-                include "admin/menu_admin/deletemenu.php";
-                break;
-            case "admin_updatemenu":
-                include " admin/menu_admin/updatemenu.php";
-                break;
-            case "home_admin":
-                include "admin/home_admin.php";
                 break;
             case 'keranjang':
                 if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
@@ -118,6 +100,7 @@
                 include "page/home.php";
                 break;
         }
+
         include "template/footer.php";
         ob_end_flush();
         ?>
