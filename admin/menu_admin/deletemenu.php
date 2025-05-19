@@ -1,5 +1,5 @@
 <?php
-include "../config.php";
+include "../../config.php";
 // Check if ID parameter exists
 if(isset($_GET['id']) && !empty($_GET['id'])) {
     $id = $_GET['id'];
@@ -23,7 +23,7 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
         if($stmt->execute()) {
             // Delete the associated image file if it exists
             if(!empty($image_file)){
-                $image_path = "../gambar/menu/" . $image_file;
+                $image_path = "../../gambar/menu/" . $image_file;
                 if(file_exists($image_path)) {
                     unlink($image_path);
                 }

@@ -20,6 +20,7 @@
 <body>
 
         <?php
+        ob_start();
         include "config.php";
         include "template/header.php";
         
@@ -118,6 +119,7 @@
                 break;
         }
         include "template/footer.php";
+        ob_end_flush();
         ?>
 
 

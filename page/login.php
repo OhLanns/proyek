@@ -14,10 +14,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['logged_in'] = true;
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
+            $_SESSION['role'] =$user['role'];
             
             // SELALU redirect ke home setelah login
+            if($_SESSION['role']==='admin'){
+              header("location: ../admin/index.php?page=home");
+              exit();   
+            }else{
             header("Location: ../index.php?halaman=home");
             exit();
+            }
         } else {
             $_SESSION['login_error'] = "Password salah";
         }

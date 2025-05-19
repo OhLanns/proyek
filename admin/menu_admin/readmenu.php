@@ -1,5 +1,5 @@
 <?php
-include "../config.php";
+include "../../config.php";
 // Display status messages
 if(isset($_GET['status'])) {
     $status = $_GET['status'];
@@ -39,8 +39,8 @@ if(isset($_GET['status'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu - Dapur Aizlan</title>
-    <link rel="stylesheet" href="../aset/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../aset/style.css">
+    <link rel="stylesheet" href="../../aset/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../aset/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap" rel="stylesheet" />
@@ -68,7 +68,7 @@ if(isset($_GET['status'])) {
                     echo '
                     <div class="col-md-4 mb-4 hidden">
                         <div class="card card-menu">
-                            <img src="../gambar/menu/' . $row["img"] . '" class="card-img-top" alt="' . $row["judul"] . '">
+                            <img src="../../gambar/menu/' . $row["img"] . '" class="card-img-top" alt="' . $row["judul"] . '">
                             <div class="card-body">
                                 <h5 class="card-title hidden">' . $row["judul"] . '</h5>
                                 <p class="card-text hidden">' . $row["deskripsi"] . '</p>
@@ -93,7 +93,7 @@ if(isset($_GET['status'])) {
         </div>
     </section>
 
-    <script src="../aset/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../aset/script.js"></script>
+    <script src="../../aset/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../aset/script.js"></script>
 </body>
 </html>

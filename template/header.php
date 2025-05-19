@@ -32,6 +32,7 @@
             <li class="" style="color: hsl(0, 0.00%, 40%); font-size: small;padding-left:10px"><p>akun anda</p></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="index.php?halaman=profile">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Riwayat Pembelian</a></li>
             <li><a class="dropdown-item" href="index.php?halaman=logout">Logout</a></li>
         </ul>
     </div>

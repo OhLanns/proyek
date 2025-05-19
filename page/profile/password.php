@@ -15,9 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (strlen($new_password) < 6) {
         $message = "Password baru harus minimal 6 karakter";
         $message_type = "danger";
-    } elseif (!preg_match('/[A-Za-z]/', $new_password) || !preg_match('/[0-9]/', $new_password)) {
-        $message = "Password baru harus mengandung huruf dan angka";
-        $message_type = "danger";
     } elseif ($new_password !== $confirm_password) {
         $message = "Konfirmasi password tidak cocok";
         $message_type = "danger";
@@ -145,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       <div class="form-group">
         <label for="new_password">Password Baru</label>
         <input type="password" class="form-control" id="new_password" name="new_password" required>
-        <small class="text-muted">Minimal 6 karakter, mengandung huruf dan angka</small>
+        <small class="text-muted">Minimal 6 karakter</small>
       </div>
       
       <div class="form-group">
