@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <title>Pengaturan Akun</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <style>
     body {
       background-color: #f5f5f5;
@@ -79,14 +74,14 @@
       border-radius: 8px;
     }
   </style>
-</head>
-<body>
 
-  <div class="pengaturan-container">
+  <div class="pengaturan-container" style="margin-top: 100px;">
     <div class="section-header">Pengaturan Akun</div>
 
     <?php
-    
+    $checkOrders = include 'check_order_status.php';
+    $hasActiveOrders = isset($_SESSION['user_id']) ? $checkOrders($_SESSION['user_id']) : false;
+
     // Cek apakah user sudah login
     if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
         // Ambil user_id dari session
@@ -135,14 +130,20 @@
     }
     ?>
     <div class="user-actions mt-3">
-        <a href="index.php?halaman=update_akun" class="btn btn-warning btn-sm">Edit Akun</a>
-        <a href="index.php?halaman=delete_akun" class="btn btn-danger btn-sm">Hapus Akun</a>
+    <a href="index.php?halaman=update_akun" class="btn btn-warning btn-sm">Edit Akun</a>
+    <a href="index.php?halaman=password" class="btn btn-warning btn-sm">Ganti Password</a>
+    
+    <!-- Tombol Hapus Akun yang Dinamis -->
+    <button id="deleteAccountBtn" 
+            class="btn btn-danger btn-sm"
+            onclick="window.location.href='index.php?halaman=delete_akun'"
+            <?php echo (checkActiveOrders($_SESSION['user_id'], $conn)) ? 'disabled title="Tidak dapat menghapus akun saat ada pesanan aktif"' : ''; ?>>
+        Hapus Akun
+    </button>    
+        <div id="orderStatusMessage" class="text-danger small mt-1 <?php echo (checkActiveOrders($_SESSION['user_id'], $conn)) ? '' : 'd-none'; ?>">
+            Anda memiliki pesanan aktif atau dalam proses. Selesaikan atau batalkan pesanan terlebih dahulu.
+        </div>
     </div>
-
-    <!-- <div class="menu-item" onclick="window.location.href='?halaman=keamanan'">Keamanan & Akun <i class="bi bi-chevron-right"></i></div>
-    <div class="menu-item" onclick="window.location.href='?halaman=alamat'">Alamat Saya <i class="bi bi-chevron-right"></i></div>
-    <div class="menu-item" onclick="window.location.href='?halaman=bank'">Kartu / Rekening Bank <i class="bi bi-chevron-right"></i></div> -->
-
     <div class="action-buttons">
       <a href="index.php?halaman=login"><button class="btn btn-light border">Ganti Akun</button></a>
       <a href="index.php?halaman=logout"><button class="btn btn-light border">Logout</button></a>
@@ -150,5 +151,3 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>

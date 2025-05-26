@@ -20,8 +20,6 @@ $user_id = $_SESSION['user_id'];
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap" rel="stylesheet" />
 </head>
 <body>
-    <!-- Toast Notification Container -->
-    <div class="toast-container" id="notification-container"></div>
 
     <div class="atas" style="height: 60px">
 
@@ -292,5 +290,217 @@ $user_id = $_SESSION['user_id'];
             document.getElementById('checkout-btn').addEventListener('click', checkout);
         });
     </script>
+    <!-- Tambahkan di bagian sebelum </body> -->
+<!-- Payment Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paymentModalLabel">Form Pembayaran</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Informasi Pelanggan</h6>
+                        <div class="mb-3">
+                            <label class="form-label">Nama</label>
+                            <input type="text" class="form-control" id="customerName" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="text" class="form-control" id="customerEmail" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nomor Telepon</label>
+                            <input type="text" class="form-control" id="customerPhone" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Metode Pembayaran</h6>
+                        <div class="mb-3">
+                            <label class="form-label">Pilih Metode</label>
+                            <select class="form-select" id="paymentMethod">
+                                <option value="Dana" selected>Dana</option>
+                                <option value="Transfer Bank">Transfer Bank</option>
+                                <option value="COD">Cash on Delivery (COD)</option>
+                            </select>
+                        </div>
+                        <div id="danaInfo" class="payment-info">
+                            <p class="small text-muted">Silahkan transfer ke nomor Dana berikut:</p>
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="../gambar/dana.jpg" alt="Dana" style="height: 30px; margin-right: 10px;">
+                                <div>
+                                    <h6 class="mb-0">081234567890</h6>
+                                    <small class="text-muted">a/n Dapur Aizlan</small>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="paymentProof" class="form-label">Upload Bukti Pembayaran</label>
+                                <input class="form-control" type="file" id="paymentProof" accept="image/*,.pdf">
+                                <small class="text-muted">Format: JPG, PNG, PDF (maks. 2MB)</small>
+                            </div>
+                        </div>
+                        <div id="bankInfo" class="payment-info d-none">
+                            <p class="small text-muted">Silahkan transfer ke rekening berikut:</p>
+                            <div class="mb-2">
+                                <h6 class="mb-0">Bank BCA</h6>
+                                <small class="text-muted">1234567890 a/n Dapur Aizlan</small>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bankProof" class="form-label">Upload Bukti Transfer</label>
+                                <input class="form-control" type="file" id="bankProof" accept="image/*,.pdf">
+                            </div>
+                        </div>
+                        <div id="codInfo" class="payment-info d-none">
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle"></i> Pembayaran dilakukan saat pesanan diterima.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="alert alert-warning small">
+                            <i class="bi bi-exclamation-triangle"></i> Pastikan data yang Anda masukkan benar. 
+                            Pesanan akan diproses setelah pembayaran diverifikasi.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary" id="confirmPayment">Konfirmasi Pembayaran</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Order Success Modal -->
+<div class="modal fade" id="orderSuccessModal" tabindex="-1" aria-labelledby="orderSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="orderSuccessModalLabel">Pesanan Berhasil</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                <h4 class="mt-3">Terima kasih!</h4>
+                <p>Pesanan Anda telah berhasil dibuat dengan ID: <strong id="orderIdDisplay"></strong></p>
+                <p>Kami akan segera memproses pesanan Anda.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <a href="index.php?halaman=riwayat" class="btn btn-primary">Lihat Riwayat</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Fungsi untuk memuat data user
+    async function loadUserData() {
+        try {
+            const response = await fetch('page/get_user_data.php');
+            const data = await response.json();
+            
+            if (data.success) {
+                document.getElementById('customerName').value = data.user.nama;
+                document.getElementById('customerEmail').value = data.user.email;
+                document.getElementById('customerPhone').value = data.user.no_telp || '-';
+            }
+        } catch (error) {
+            console.error('Error loading user data:', error);
+        }
+    }
+
+    // Fungsi untuk checkout
+    async function checkout() {
+        const confirmed = await showCustomConfirm('Lanjutkan proses checkout?', 'Konfirmasi Checkout');
+        
+        if (confirmed) {
+            // Load user data first
+            await loadUserData();
+            
+            // Show payment modal
+            const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+            paymentModal.show();
+        }
+    }
+
+    // Fungsi untuk proses pembayaran
+    async function processPayment() {
+        const paymentMethod = document.getElementById('paymentMethod').value;
+        const paymentProofInput = paymentMethod === 'Dana' ? 
+            document.getElementById('paymentProof') : 
+            document.getElementById('bankProof');
+        
+        // Validasi
+        if ((paymentMethod === 'Dana' || paymentMethod === 'Transfer Bank') && !paymentProofInput.files[0]) {
+            showToast('Harap upload bukti pembayaran', 'error');
+            return;
+        }
+        
+        const formData = new FormData();
+        formData.append('payment_method', paymentMethod);
+        
+        if (paymentProofInput.files[0]) {
+            formData.append('payment_proof', paymentProofInput.files[0]);
+        }
+        
+        try {
+            const response = await fetch('page/checkout.php', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Hide payment modal
+                const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+                paymentModal.hide();
+                
+                // Show success modal
+                document.getElementById('orderIdDisplay').textContent = '#' + data.order_id;
+                const successModal = new bootstrap.Modal(document.getElementById('orderSuccessModal'));
+                successModal.show();
+                
+                // Update cart
+                loadCart();
+                updateCartCount();
+            } else {
+                showToast('Gagal checkout: ' + data.message, 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showToast('Terjadi kesalahan saat memproses pembayaran', 'error');
+        }
+    }
+
+    // Inisialisasi saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', function() {
+        loadCart();
+        document.getElementById('checkout-btn').addEventListener('click', checkout);
+        
+        // Payment method change handler
+        document.getElementById('paymentMethod').addEventListener('change', function() {
+            const method = this.value;
+            document.querySelectorAll('.payment-info').forEach(el => el.classList.add('d-none'));
+            
+            if (method === 'Dana') {
+                document.getElementById('danaInfo').classList.remove('d-none');
+            } else if (method === 'Transfer Bank') {
+                document.getElementById('bankInfo').classList.remove('d-none');
+            } else if (method === 'COD') {
+                document.getElementById('codInfo').classList.remove('d-none');
+            }
+        });
+        
+        // Confirm payment button
+        document.getElementById('confirmPayment').addEventListener('click', processPayment);
+    });
+</script>
 </body>
 </html>

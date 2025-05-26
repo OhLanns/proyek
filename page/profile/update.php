@@ -48,13 +48,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Profil</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f5f5f5;
@@ -86,9 +79,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             color: #000;
         }
     </style>
-</head>
-<body>
-    <div class="edit-container">
+
+    <div class="edit-container"style="margin-top: 100px;" >
         <div class="section-header">Edit Profil</div>
         
         <?php if(!empty($errors)): ?>
@@ -137,5 +129,3 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>

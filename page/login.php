@@ -1,4 +1,10 @@
 <?php
+
+// Tambahkan di bagian paling atas sebelum output apapun
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 // Proses login jika form dikirim
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $conn->real_escape_string(trim($_POST['username']));
@@ -14,9 +20,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['logged_in'] = true;
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
+            $_SESSION['role'] = $user['role'];
             
-            // SELALU redirect ke home setelah login
-            header("Location: ../index.php?halaman=home");
+            // Redirect berdasarkan role
+            if ($user['role'] == 'admin') {
+                header("Location: admin/index.php");
+            } else {
+                header("Location: ../index.php?halaman=home");
+            }
             exit();
         } else {
             $_SESSION['login_error'] = "Password salah";
@@ -46,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="alert alert-info">Silakan login terlebih dahulu untuk melanjutkan.</div>
         <?php endif; ?>
 
-        <form action="page/proses_login.php" method="POST">
+        <form action="index.php?halaman=login" method="POST">
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" name="username" class="form-control" required autofocus>

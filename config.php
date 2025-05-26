@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 // Daftar menu dengan ID unik
 $servername = "localhost";

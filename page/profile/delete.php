@@ -50,12 +50,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Hapus Akun</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f5f5f5;
@@ -96,10 +90,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             border-color: #dc3545;
         }
     </style>
-</head>
-<body>
     
-    <div class="delete-container">
+    <div class="delete-container" style="margin-top: 100px;">
         <div class="section-header">Hapus Akun</div>
         
         <?php if(!empty($error_message)): ?>
@@ -125,5 +117,3 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>

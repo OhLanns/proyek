@@ -35,9 +35,29 @@ try {
     }
     
     // 2. Create order record
-    $sql = "INSERT INTO orders (user_id, total, status) VALUES (?, ?, 'pending')";
+    $payment_method = $_POST['payment_method'] ?? 'Dana';
+    $payment_proof = '';
+    
+    // Handle file upload
+    if (isset($_FILES['payment_proof'])) {
+        $target_dir = "../gambar/payment/";
+        if (!file_exists($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+        
+        $file_ext = pathinfo($_FILES['payment_proof']['name'], PATHINFO_EXTENSION);
+        $new_filename = "proof_" . $user_id . "_" . time() . "." . $file_ext;
+        $target_file = $target_dir . $new_filename;
+        
+        if (move_uploaded_file($_FILES['payment_proof']['tmp_name'], $target_file)) {
+            $payment_proof = $new_filename;
+        }
+    }
+    
+    $sql = "INSERT INTO orders (user_id, total, status, payment_method, payment_proof) 
+            VALUES (?, ?, 'pending', ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("id", $user_id, $total);
+    $stmt->bind_param("idss", $user_id, $total, $payment_method, $payment_proof);
     $stmt->execute();
     $order_id = $conn->insert_id;
     
@@ -59,7 +79,7 @@ try {
     // Commit transaction
     $conn->commit();
     
-    echo json_encode(['success' => true]);
+    echo json_encode(['success' => true, 'order_id' => $order_id]);
 } catch (Exception $e) {
     $conn->rollback();
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);

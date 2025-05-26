@@ -124,7 +124,7 @@ $user_id = $logged_in ? $_SESSION['user_id'] : null;?>
                         <small>Baru saja</small>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
-                    <div class="toast-body">
+                    <div class="toast-body" style="background-color:wheat !important;">
                         ${message}
                     </div>
                 </div>

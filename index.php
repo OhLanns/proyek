@@ -4,9 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DAPUR AIZLAN</title>
-    <link rel="stylesheet" href="aset/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="aset/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="aset/style.css" />
-    <link rel="stylesheet" href="aset/style2.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
@@ -20,6 +19,7 @@
 <body>
 
         <?php
+        session_start();
         ob_start();
         include "config.php";
         include "template/header.php";
@@ -94,6 +94,9 @@
                 break;
             case 'reset_password':
                 include "page/reset_password.php";
+                break;
+            case 'riwayat':
+                include "page/riwayat.php";
                 break;
             default:
                 // Jika parameter tidak cocok, tampilkan halaman 404 atau home
