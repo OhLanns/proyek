@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
+      rel="stylesheet"
+    />
+    
     <link rel="stylesheet" href="..//bootstrap/css/bootstrap.min.css">
 </head>
 <body>
     
 <?php
-session_start();
+include "../config.php";
 
 // Cek jika user mencoba akses halaman admin tanpa login
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['role'] !== 'admin') {
@@ -17,28 +22,26 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSI
     exit();
 }
 
-// Set header untuk mencegah caching
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
-
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 
 switch($page){
     case "home":
         include "admin_page/home.php";
         break;
+    case "menu":
+        include "admin_page/readmenu.php";
+        break;
+    case "kelola_user":
+        include "admin_page/kelola_user.php";
+        break;
+    case "pesanan":
+        include "admin_page/pesanan.php";
+        break;
     default:
         include "admin_page/home.php";
         break;
 }
 ?>
-<script>
-// Mencegah back button browser
-history.pushState(null, null, location.href);
-window.onpopstate = function () {
-    history.go(1);
-};
-</script>
+
 </body>
 </html>

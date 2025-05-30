@@ -4,7 +4,7 @@
         <!-- Logo dan Nama Brand -->
         <a class="navbar-brand d-flex align-items-center" href="index.php?halaman=home">
             <img
-                src="../gambar/logo.jpg"
+                src="gambar/logo.jpg"
                 alt="Logo"
                 style="height: 40px; margin-right: 10px; border-radius: 50%"
             />

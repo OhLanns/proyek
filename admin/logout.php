@@ -5,6 +5,6 @@ $_SESSION = array();
 // Destroy the session
 session_destroy();
 // Redirect to home page
-header("Location: index.php?halaman=home");
+header("Location: ../index.php?halaman=home");
 exit();
 ?>

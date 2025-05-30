@@ -19,7 +19,7 @@
             <h2 class="text-center mb-4 hidden">ABOUT</h2>
             <div class="row align-items-center row-about">
                 <div class="col-md-6 hidden">
-                    <img src="../gambar/about.jpg" alt="ABOUT" class="img-fluid rounded">
+                    <img src="gambar/about.jpg" alt="ABOUT" class="img-fluid rounded">
                 </div>
                 <div class="col-md-6 hidden">
                     <h3>Kenapa Memilih Dapur Aizlan?</h3>

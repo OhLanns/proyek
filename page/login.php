@@ -1,10 +1,5 @@
 <?php
 
-// Tambahkan di bagian paling atas sebelum output apapun
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
-
 // Proses login jika form dikirim
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $conn->real_escape_string(trim($_POST['username']));

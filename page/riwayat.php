@@ -4,6 +4,14 @@ if (!isset($_SESSION['logged_in'])) {
     exit();
 }
 $user_id = $_SESSION['user_id'];
+
+// Get user data
+$sql = "SELECT nama, email, no_telepon, alamat FROM users WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$user_data = $result->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +28,7 @@ $user_id = $_SESSION['user_id'];
     <div class="atas" style="height: 60px"></div>
 
     <section class="riwayat py-5">
-        <div class="container">
+        <div class="container" style="min-height:315px;">
             <h2 class="text-center mb-4"><b>Riwayat Pembelian</b></h2>
             
             <div class="card border-0 shadow-sm">
@@ -58,14 +66,30 @@ $user_id = $_SESSION['user_id'];
                 <div class="modal-body">
                     <div class="row mb-4">
                         <div class="col-md-6">
+                            <h6>Informasi Pelanggan</h6>
+                            <p><strong>Nama:</strong> <span id="detailCustomerName"><?php echo htmlspecialchars($user_data['nama'] ?? ''); ?></span></p>
+                            <p><strong>Telepon:</strong> <span id="detailCustomerPhone"><?php echo htmlspecialchars($user_data['no_telepon'] ?? '-'); ?></span></p>
+                            <p><strong>Alamat:</strong> <span id="detailCustomerAddress"><?php echo htmlspecialchars($user_data['alamat'] ?? '-'); ?></span></p>
+                        </div>
+                        <div class="col-md-6">
                             <h6>Informasi Pesanan</h6>
                             <p><strong>Tanggal:</strong> <span id="detailOrderDate"></span></p>
                             <p><strong>Status:</strong> <span id="detailOrderStatus" class="badge"></span></p>
+                            <p><strong>Metode Penerimaan:</strong> <span id="detailPenerimaanMethod"></span></p>
+                            <div id="deliveryDateContainer">
+                                <p><strong>Tanggal Pengambilan/Pengiriman:</strong> <span id="detailDeliveryDate"></span></p>
+                            </div>
+                            <p><strong>Catatan:</strong> <span id="detailOrderNotes"></span></p>
                         </div>
+                    </div>
+                    
+                    <div class="row mb-4">
                         <div class="col-md-6">
                             <h6>Pembayaran</h6>
                             <p><strong>Metode:</strong> <span id="detailPaymentMethod"></span></p>
                             <p><strong>Total:</strong> <span id="detailOrderTotal"></span></p>
+                        </div>
+                        <div class="col-md-6">
                             <div id="paymentProofContainer" class="mt-2">
                                 <strong>Bukti Pembayaran:</strong>
                                 <div id="paymentProofImage" class="mt-2"></div>
@@ -194,8 +218,32 @@ $user_id = $_SESSION['user_id'];
                     if (data.order.status === 'cancelled') badgeClass = 'bg-danger';
                     statusBadge.className = `badge ${badgeClass}`;
                     
+                    // Payment info
                     document.getElementById('detailPaymentMethod').textContent = data.order.payment_method;
                     document.getElementById('detailOrderTotal').textContent = `Rp ${data.order.total.toLocaleString('id-ID')}`;
+                    
+                    // Penerimaan method
+                    const penerimaanMethodText = data.order.penerimaanMethod === 'ambil_di_tempat' ? 'Ambil di Tempat' : 'Diantar';
+                    document.getElementById('detailPenerimaanMethod').textContent = penerimaanMethodText;
+                    
+                    // Delivery date
+                    const deliveryDateContainer = document.getElementById('deliveryDateContainer');
+                    const detailDeliveryDate = document.getElementById('detailDeliveryDate');
+                    if (data.order.tanggal_diambil_dikirim) {
+                        const deliveryDate = new Date(data.order.tanggal_diambil_dikirim);
+                        detailDeliveryDate.textContent = deliveryDate.toLocaleDateString('id-ID');
+                        deliveryDateContainer.style.display = 'block';
+                    } else {
+                        deliveryDateContainer.style.display = 'none';
+                    }
+                    
+                    // Order notes
+                    const detailOrderNotes = document.getElementById('detailOrderNotes');
+                    if (data.order.catatan) {
+                        detailOrderNotes.textContent = data.order.catatan;
+                    } else {
+                        detailOrderNotes.textContent = '-';
+                    }
                     
                     // Payment proof
                     const proofContainer = document.getElementById('paymentProofImage');

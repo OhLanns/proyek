@@ -1,6 +1,8 @@
 <?php
+
 $logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
-$user_id = $logged_in ? $_SESSION['user_id'] : null;?>
+$user_id = $logged_in ? $_SESSION['user_id'] : null;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,7 +83,7 @@ $user_id = $logged_in ? $_SESSION['user_id'] : null;?>
                     echo  '
                     <div class="col-md-4 mb-4 hidden">
                         <div class="card card-menu">
-                            <img src="../gambar/menu/' . $row["img"] . '" class="card-img-top" alt="' . $row["judul"] . '">
+                            <img src="gambar/menu/' . $row["img"] . '" class="card-img-top" alt="' . $row["judul"] . '">
                             <div class="card-body">
                                 <h5 class="card-title hidden">' . $row["judul"] . '</h5>
                                 <p class="card-text hidden">' . $row["deskripsi"] . '</p>
