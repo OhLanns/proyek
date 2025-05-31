@@ -146,7 +146,7 @@ $conn->close();
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="index.php?page=laporan">
                             <i class="bi bi-graph-up"></i> Laporan
                         </a>
                     </li>
@@ -180,7 +180,6 @@ $conn->close();
                                     <th>Email</th>
                                     <th>Telepon</th>
                                     <th>Alamat</th>
-                                    <th>Role</th>
                                     <th>Tanggal Daftar</th>
                                 </tr>
                             </thead>
@@ -199,11 +198,6 @@ $conn->close();
                                             <td><?= htmlspecialchars($user['email']) ?></td>
                                             <td><?= htmlspecialchars($user['no_telepon']) ?></td>
                                             <td><?= htmlspecialchars($user['alamat'])?></td>
-                                            <td>
-                                                <span class="badge <?= $user['role'] === 'admin' ? 'bg-primary' : 'bg-secondary' ?>">
-                                                    <?= ucfirst($user['role']) ?>
-                                                </span>
-                                            </td>
                                             <td>
                                                 <?= date('d M Y H:i', strtotime($user['create_akun'])) ?>
                                             </td>

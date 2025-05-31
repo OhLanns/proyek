@@ -160,7 +160,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
         }
         
         .badge-pending { background-color: #6c757d; }
-        .badge-diproses { background-color: #fd7e14; }
+        .badge-diproses { background-color:rgb(17, 120, 205); }
         .badge-selesai { background-color: #28a745; }
         .badge-dibatalkan { background-color: #dc3545; }
         
@@ -212,7 +212,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="index.php?page=laporan">
                             <i class="bi bi-graph-up"></i> Laporan
                         </a>
                     </li>
@@ -231,17 +231,17 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
             
             <!-- Statistik -->
             <div class="stats-container">
-                <div class="stat-card card-orders">
+             <div class="stat-card card-orders">
                     <div class="stat-content">
                         <i class="bi bi-cart stat-icon"></i>
                         <div class="stat-number">
                             <?php
-                            $sql = "SELECT COUNT(*) as total FROM orders";
+                            $sql = "SELECT COUNT(*) as total FROM orders WHERE status IN ('pending', 'diproses')";
                             $result = $conn->query($sql);
                             echo ($result && $result->num_rows > 0) ? $result->fetch_assoc()['total'] : "0";
                             ?>
                         </div>
-                        <div class="stat-label">Total Pesanan</div>
+                        <div class="stat-label">Pesanan Aktif</div>
                     </div>
                 </div>
                 
@@ -319,36 +319,38 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
                                 <th>Total</th>
                                 <th>Status</th>
                                 <th>Metode Pembayaran</th>
-                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            $sql = "SELECT o.id, u.username, o.tanggal, o.total, o.status, o.payment_method 
-                                    FROM orders o
-                                    JOIN users u ON o.user_id = u.id
-                                    ORDER BY o.tanggal DESC LIMIT 5";
-                            $result = $conn->query($sql);
-                            
-                            if ($result->num_rows > 0) {
-                                while($row = $result->fetch_assoc()) {
-                                    $status_class = 'badge-' . strtolower($row['status']);
-                                    echo '<tr>
-                                            <td>#' . $row['id'] . '</td>
-                                            <td>' . htmlspecialchars($row['username']) . '</td>
-                                            <td>' . date('d M Y H:i', strtotime($row['tanggal'])) . '</td>
-                                            <td>Rp ' . number_format($row['total'], 0, ',', '.') . '</td>
-                                            <td><span class="badge ' . $status_class . '">' . ucfirst($row['status']) . '</span></td>
-                                            <td>' . htmlspecialchars($row['payment_method']) . '</td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-outline-primary">Detail</a>
-                                            </td>
-                                          </tr>';
+                              <?php
+                                $sql = "SELECT o.id, u.username, o.tanggal, o.total, o.status, o.payment_method 
+                                        FROM orders o
+                                        JOIN users u ON o.user_id = u.id
+                                        ORDER BY o.tanggal DESC LIMIT 5";
+                                $result = $conn->query($sql);
+
+                                if ($result->num_rows > 0) {
+                                    while($row = $result->fetch_assoc()) {
+                                        // Ubah teks status sebelum ditampilkan
+                                        $status_text = $row['status'];
+                                        if ($status_text == 'pending') {
+                                            $status_text = 'menunggu';
+                                        }
+                                        
+                                        $status_class = 'badge-' . strtolower($row['status']);
+                                        echo '<tr>
+                                                <td>#' . $row['id'] . '</td>
+                                                <td>' . htmlspecialchars($row['username']) . '</td>
+                                                <td>' . date('d M Y H:i', strtotime($row['tanggal'])) . '</td>
+                                                <td>Rp ' . number_format($row['total'], 0, ',', '.') . '</td>
+                                                <td><span class="badge ' . $status_class . '">' . ucfirst($status_text) . '</span></td>
+                                                <td>' . htmlspecialchars($row['payment_method']) . '</td>
+                                            </tr>';
+                                    }
+                                } else {
+                                    echo '<tr><td colspan="7" class="text-center">Tidak ada pesanan</td></tr>';
                                 }
-                            } else {
-                                echo '<tr><td colspan="7" class="text-center">Tidak ada pesanan</td></tr>';
-                            }
-                            ?>
+                                ?>
                         </tbody>
                     </table>
                 </div>
@@ -424,7 +426,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
         const statusChart = new Chart(statusCtx, {
             type: 'doughnut',
             data: {
-                labels: ['Pending', 'Diproses', 'Selesai', 'Dibatalkan'],
+                labels: ['Menunggu', 'Diproses', 'Selesai', 'Dibatalkan'],
                 datasets: [{
                     data: [
                         <?php
@@ -439,7 +441,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
                     ],
                     backgroundColor: [
                         '#6c757d', // pending
-                        '#fd7e14', // diproses
+                        'rgb(17, 120, 205)', // diproses
                         '#28a745', // selesai
                         '#dc3545'  // dibatalkan
                     ],

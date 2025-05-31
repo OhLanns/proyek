@@ -46,10 +46,35 @@ try {
     $penerimaanMethod = $_POST['penerimaan_method'] ?? 'ambil_di_tempat';
     $tanggal_diambil_dikirim = isset($_POST['delivery_date']) ? $_POST['delivery_date'] : null;
     $catatan = $_POST['notes'] ?? '';
+    $use_new_address = isset($_POST['use_new_address']) && $_POST['use_new_address'] === '1';
+    $shipping_address = '';
     
+    // Handle shipping address
+    if ($penerimaanMethod === 'diantar') {
+        if ($use_new_address) {
+            $shipping_address = $_POST['shipping_address'] ?? '';
+            if (empty($shipping_address)) {
+                throw new Exception("Alamat pengiriman baru harus diisi");
+            }
+        } else {
+            // Get user's address from profile
+            $sql = "SELECT alamat FROM users WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $user_data = $result->fetch_assoc();
+            $shipping_address = $user_data['alamat'];
+        }
+    }
+
     // Validasi tanggal untuk metode diantar
     if ($penerimaanMethod === 'diantar' && empty($tanggal_diambil_dikirim)) {
-        throw new Exception("Tanggal pengiriman harus diisi untuk metode diantar");
+        throw new Exception("Tanggal pengiriman harus diisi");
+    }
+
+    if ($penerimaanMethod === 'ambil_di_tempat' && empty($tanggal_diambil_dikirim)) {
+        throw new Exception("Tanggal pengambilan harus diisi");
     }
 
     // Handle file upload
@@ -63,8 +88,7 @@ try {
         $new_filename = "proof_" . $user_id . "_" . time() . "." . $file_ext;
         $target_file = $target_dir . $new_filename;
         
-        // Validasi ukuran file
-        if ($_FILES['payment_proof']['size'] > 2097152) { // 2MB
+        if ($_FILES['payment_proof']['size'] > 2097152) {
             throw new Exception("Ukuran file terlalu besar. Maksimal 2MB");
         }
         
@@ -80,10 +104,21 @@ try {
         throw new Exception("Bukti pembayaran harus diupload untuk metode ini");
     }
     
-    $sql = "INSERT INTO orders (user_id, total, status, payment_method, payment_proof, penerimaanMethod, tanggal_diambil_dikirim, catatan) 
-        VALUES (?, ?, 'pending', ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO orders (user_id, total, status, payment_method, payment_proof, 
+            penerimaanMethod, tanggal_diambil_dikirim, catatan, shipping_address, use_new_address) 
+            VALUES (?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("idsssss", $user_id, $total, $payment_method, $payment_proof, $penerimaanMethod, $tanggal_diambil_dikirim, $catatan);
+    $stmt->bind_param("idssssssi", 
+        $user_id, 
+        $total, 
+        $payment_method, 
+        $payment_proof, 
+        $penerimaanMethod, 
+        $tanggal_diambil_dikirim, 
+        $catatan,
+        $shipping_address,
+        $use_new_address
+    );
     $stmt->execute();
     $order_id = $conn->insert_id;
     

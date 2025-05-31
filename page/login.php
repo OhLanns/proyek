@@ -19,9 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             // Redirect berdasarkan role
             if ($user['role'] == 'admin') {
-                header("Location: admin/index.php");
+                header("Location: admin/index.php?page=home");
             } else {
-                header("Location: ../index.php?halaman=home");
+                header("Location: index.php?halaman=home");
             }
             exit();
         } else {
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Redirect kembali ke halaman login jika ada error
-    header("Location: ../index.php?halaman=login");
+    header("Location: index.php?halaman=login");
     exit();
 }
 ?>

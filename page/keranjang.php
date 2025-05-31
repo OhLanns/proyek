@@ -27,12 +27,91 @@ $conn->close();
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap" rel="stylesheet" />
+    <style>
+        /* Improved Toast Notification Styles */
+        #notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1100;
+            width: 350px;
+        }
+        
+        .custom-toast {
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-bottom: 15px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        
+        .toast-success {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .toast-error {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .toast-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .toast-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+        
+        .toast-body {
+            padding: 15px;
+        }
+        
+        .btn-close-white {
+            filter: invert(1);
+            opacity: 0.8;
+        }
+        
+        .btn-close-white:hover {
+            opacity: 1;
+        }
+        
+        .toast-progress {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .toast-progress-bar {
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.7);
+            animation: toastProgress linear forwards;
+        }
+        
+        @keyframes toastProgress {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+        
+        /* Cart item styles */
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+    </style>
 </head>
 <body>
+    <!-- Notification Container -->
+    <div id="notification-container"></div>
 
-    <div class="atas" style="height: 60px">
-
-    </div>
+    <div class="atas" style="height: 60px"></div>
+    
     <section class="keranjang py-5">
         <div class="container">
             <h2 class="text-center mb-4"><b>Keranjang Belanja</b></h2>
@@ -110,10 +189,40 @@ $conn->close();
                                 <input type="date" class="form-control" id="deliveryDate" min="<?php echo date('Y-m-d'); ?>">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Alamat</label>
-                                <textarea class="form-control" id="customerAddress" rows="3" readonly><?php echo htmlspecialchars($user_data['alamat'] ?? '-'); ?></textarea>
+                                <label class="form-label">Alamat </label>
+                                
+                                <div class="d-flex mb-3">
+                                    <div class="form-check me-4">
+                                        <input class="form-check-input" type="radio" name="addressOption" id="useAccountAddress" checked>
+                                        <label class="form-check-label" for="useAccountAddress">
+                                            Alamat Akun
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="addressOption" id="useNewAddress">
+                                        <label class="form-check-label" for="useNewAddress">
+                                            Alamat Baru
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Container untuk alamat akun -->
+                                <div id="accountAddressContainer">
+                                    <div class="card card-body bg-light mb-3">
+                                        <address class="mb-0">
+                                            <?php echo htmlspecialchars($user_data['alamat'] ?? 'Alamat belum diisi'); ?>
+                                        </address>
+                                    </div>
+                                </div>
+                                
+                                <!-- Container untuk alamat baru (awalnya tersembunyi) -->
+                                <div id="newAddressContainer" class="d-none">
+                                    <textarea class="form-control" id="newShippingAddress" rows="3" 
+                                            placeholder="Masukkan alamat lengkap pengiriman"></textarea>
+                                    <small class="text-muted">Contoh: Nama Gedung, Lantai, Nama Penerima, dll.</small>
+                                </div>
                             </div>
-        
                         </div>
                         <div class="col-md-6">
                             <h6>Metode Pembayaran</h6>
@@ -158,7 +267,7 @@ $conn->close();
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Catatan (Opsional)</label>
-                                <textarea class="form-control" id="orderNotes" rows="2" placeholder="Contoh: Jangan pakai cabe, tambah piring, dll."></textarea>
+                                <textarea class="form-control" id="orderNotes" rows="2" placeholder="Contoh: Jangan pakai cabe, sama  bumbu di pisah, dll"></textarea>
                             </div>
                         </div>
                     </div>
@@ -202,283 +311,348 @@ $conn->close();
     </div>
 
     <script>
-    // Custom confirmation modal
-    const customConfirmModal = document.getElementById('customConfirmModal');
-    const customConfirmMessage = document.getElementById('customConfirmMessage');
-    const customConfirmTitle = document.getElementById('customConfirmTitle');
-    const customConfirmOk = document.getElementById('customConfirmOk');
-    const customConfirmCancel = document.getElementById('customConfirmCancel');
+        // Custom confirmation modal
+        const customConfirmModal = document.getElementById('customConfirmModal');
+        const customConfirmMessage = document.getElementById('customConfirmMessage');
+        const customConfirmTitle = document.getElementById('customConfirmTitle');
+        const customConfirmOk = document.getElementById('customConfirmOk');
+        const customConfirmCancel = document.getElementById('customConfirmCancel');
 
-    // Fungsi untuk menampilkan konfirmasi kustom
-    function showCustomConfirm(message, title = 'Konfirmasi') {
-        return new Promise((resolve) => {
-            customConfirmTitle.textContent = title;
-            customConfirmMessage.textContent = message;
-            customConfirmModal.style.display = 'flex';
-            
-            customConfirmOk.onclick = () => {
-                customConfirmModal.style.display = 'none';
-                resolve(true);
-            };
-            
-            customConfirmCancel.onclick = () => {
-                customConfirmModal.style.display = 'none';
-                resolve(false);
-            };
-        });
-    }
-
-    // Fungsi untuk menampilkan alert kustom
-    function showCustomAlert(message, title = 'Pemberitahuan') {
-        return new Promise((resolve) => {
-            customConfirmTitle.textContent = title;
-            customConfirmMessage.textContent = message;
-            customConfirmModal.style.display = 'flex';
-            
-            // Hanya tampilkan tombol OK
-            customConfirmCancel.style.display = 'none';
-            customConfirmOk.textContent = 'OK';
-            
-            customConfirmOk.onclick = () => {
-                customConfirmModal.style.display = 'none';
-                customConfirmCancel.style.display = '';
-                customConfirmOk.textContent = 'OK';
-                resolve();
-            };
-        });
-    }
-
-    // Fungsi untuk menampilkan notifikasi toast
-    function showToast(message, type = 'success', duration = 2500) {
-        const container = document.getElementById('notification-container');
-        const toastId = 'toast-' + Date.now();
-        
-        const toastHTML = `
-            <div id="${toastId}" class="toast custom-toast toast-${type}" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="${duration}">
-                <div class="toast-body d-flex justify-content-between align-items-center">
-                    <div>
-                        <i class="bi ${type === 'success' ? 'bi-check-circle' : 'bi-exclamation-circle'} me-2"></i>
-                        ${message}
-                    </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-            </div>
-        `;
-        
-        container.insertAdjacentHTML('beforeend', toastHTML);
-        const toast = new bootstrap.Toast(document.getElementById(toastId));
-        toast.show();
-        
-        // Hapus toast setelah selesai
-        document.getElementById(toastId).addEventListener('hidden.bs.toast', function() {
-            this.remove();
-        });
-    }
-
-    // Fungsi untuk memuat keranjang
-    function loadCart() {
-        fetch('page/get_cart_items.php')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    renderCart(data.items);
-                } else {
-                    showEmptyCart();
-                }
+        // Fungsi untuk menampilkan konfirmasi kustom
+        function showCustomConfirm(message, title = 'Konfirmasi') {
+            return new Promise((resolve) => {
+                customConfirmTitle.textContent = title;
+                customConfirmMessage.textContent = message;
+                customConfirmModal.style.display = 'flex';
+                
+                customConfirmOk.onclick = () => {
+                    customConfirmModal.style.display = 'none';
+                    resolve(true);
+                };
+                
+                customConfirmCancel.onclick = () => {
+                    customConfirmModal.style.display = 'none';
+                    resolve(false);
+                };
             });
-    }
-
-    // Fungsi untuk menampilkan keranjang kosong
-    function showEmptyCart() {
-        document.getElementById('cart-items').innerHTML = 
-            '<div class="text-center py-4"><i class="bi bi-cart-x fs-1 text-muted"></i><p class="mt-2 text-muted">Keranjang belanja kosong</p></div>';
-        document.getElementById('order-summary').innerHTML = 
-            '<p class="text-muted">Belum ada item dalam keranjang</p>';
-        document.getElementById('checkout-btn').disabled = true;
-    }
-
-    // Fungsi untuk merender item keranjang
-    function renderCart(items) {
-        const cartItemsContainer = document.getElementById('cart-items');
-        const orderSummaryContainer = document.getElementById('order-summary');
-        const checkoutBtn = document.getElementById('checkout-btn');
-        
-        if (items.length === 0) {
-            showEmptyCart();
-            return;
         }
-        
-        let cartItemsHTML = '';
-        let subtotal = 0;
-        
-        items.forEach(item => {
-            let itemTotal = item.harga * item.quantity;
-            subtotal += itemTotal;
+
+        // Fungsi untuk menampilkan alert kustom
+        function showCustomAlert(message, title = 'Pemberitahuan') {
+            return new Promise((resolve) => {
+                customConfirmTitle.textContent = title;
+                customConfirmMessage.textContent = message;
+                customConfirmModal.style.display = 'flex';
+                
+                // Hanya tampilkan tombol OK
+                customConfirmCancel.style.display = 'none';
+                customConfirmOk.textContent = 'OK';
+                
+                customConfirmOk.onclick = () => {
+                    customConfirmModal.style.display = 'none';
+                    customConfirmCancel.style.display = '';
+                    customConfirmOk.textContent = 'OK';
+                    resolve();
+                };
+            });
+        }
+
+        // Improved notification function
+        function showToast(message, type = 'success', duration = 3000) {
+            const container = document.getElementById('notification-container');
+            const toastId = 'toast-' + Date.now();
             
-            cartItemsHTML += `
-                <div class="cart-item p-3 mb-3 bg-white" data-id="${item.id}">
-                    <div class="d-flex align-items-center">
-                        <img src="gambar/menu/${item.img}" 
-                             alt="${item.judul}" 
-                             class="cart-item-img me-3">
-                        <div class="flex-grow-1">
-                            <h6 class="mb-1 fw-bold">${item.judul}</h6>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-muted">Rp ${item.harga.toLocaleString('id-ID')} × ${item.quantity}</span>
-                                <span class="fw-bold">Rp ${itemTotal.toLocaleString('id-ID')}</span>
+            // Icon mapping
+            const icons = {
+                success: 'bi-check-circle-fill',
+                error: 'bi-exclamation-circle-fill',
+                warning: 'bi-exclamation-triangle-fill',
+                info: 'bi-info-circle-fill'
+            };
+            
+            const toastHTML = `
+                <div id="${toastId}" class="toast custom-toast toast-${type}" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-body d-flex justify-content-between align-items-start" style="background-color:var(--primary);">
+                        <div class="d-flex align-items-center">
+                            <i class="bi ${icons[type] || 'bi-info-circle'} me-3" style="font-size: 1.5rem;"></i>
+                            <div>
+                                <strong class="me-auto">${type.charAt(0).toUpperCase() + type.slice(1)}</strong>
+                                <div>${message}</div>
                             </div>
                         </div>
-                        <button class="btn btn-sm btn-outline-danger ms-3 remove-item" data-id="${item.id}">
-                            <i class="bi bi-trash"></i>
-                        </button>
+                        <button type="button" class="btn-close btn-close-white ms-3" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-progress">
+                        <div class="toast-progress-bar" style="animation-duration: ${duration}ms;"></div>
                     </div>
                 </div>
             `;
-        });
-        
-        cartItemsContainer.innerHTML = cartItemsHTML;
-        
-        // Render ringkasan pesanan
-        
-        let total = subtotal;
-        
-        orderSummaryContainer.innerHTML = `
-            <div class="summary-item d-flex justify-content-between mb-2">
-                <span>Subtotal:</span>
-                <span>Rp ${subtotal.toLocaleString('id-ID')}</span>
-            </div>
             
-            <hr>
-            <div class="summary-total d-flex justify-content-between">
-                <span>Total Pembayaran:</span>
-                <span>Rp ${total.toLocaleString('id-ID')}</span>
-            </div>
-        `;
-        
-        checkoutBtn.disabled = false;
-        
-        // Tambahkan event listener untuk tombol hapus
-        document.querySelectorAll('.remove-item').forEach(button => {
-            button.addEventListener('click', function() {
-                const itemId = parseInt(this.getAttribute('data-id'));
-                confirmDelete(itemId);
+            container.insertAdjacentHTML('beforeend', toastHTML);
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement, {
+                autohide: true,
+                delay: duration
             });
-        });
-    }
+            toast.show();
+            
+            // Remove toast after it's hidden
+            toastElement.addEventListener('hidden.bs.toast', function() {
+                this.remove();
+            });
+        }
 
-    // Fungsi untuk konfirmasi penghapusan
-    async function confirmDelete(itemId) {
-        const confirmed = await showCustomConfirm('Yakin ingin menghapus item ini dari keranjang?', 'Hapus Item');
-        
-        if (confirmed) {
-            fetch('page/remove_from_cart.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    menu_id: itemId
+        // Fungsi untuk memuat keranjang
+        function loadCart() {
+            fetch('page/get_cart_items.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        renderCart(data.items);
+                    } else {
+                        showEmptyCart();
+                    }
+                });
+        }
+
+        // Fungsi untuk menampilkan keranjang kosong
+        function showEmptyCart() {
+            document.getElementById('cart-items').innerHTML = 
+                '<div class="text-center py-4"><i class="bi bi-cart-x fs-1 text-muted"></i><p class="mt-2 text-muted">Keranjang belanja kosong</p></div>';
+            document.getElementById('order-summary').innerHTML = 
+                '<p class="text-muted">Belum ada item dalam keranjang</p>';
+            document.getElementById('checkout-btn').disabled = true;
+        }
+
+        // Fungsi untuk merender item keranjang
+        function renderCart(items) {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const orderSummaryContainer = document.getElementById('order-summary');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            
+            if (items.length === 0) {
+                showEmptyCart();
+                return;
+            }
+            
+            let cartItemsHTML = '';
+            let subtotal = 0;
+            
+            items.forEach(item => {
+                let itemTotal = item.harga * item.quantity;
+                subtotal += itemTotal;
+                
+                cartItemsHTML += `
+                    <div class="cart-item p-3 mb-3 bg-white rounded" data-id="${item.id}">
+                        <div class="d-flex align-items-center">
+                            <img src="gambar/menu/${item.img}" 
+                                alt="${item.judul}" 
+                                class="cart-item-img me-3">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1 fw-bold">${item.judul}</h6>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-muted">Rp ${item.harga.toLocaleString('id-ID')} × ${item.quantity}</span>
+                                    <span class="fw-bold">Rp ${itemTotal.toLocaleString('id-ID')}</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-sm btn-outline-danger ms-3 remove-item" data-id="${item.id}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            cartItemsContainer.innerHTML = cartItemsHTML;
+            
+            // Render ringkasan pesanan
+            let total = subtotal;
+            
+            orderSummaryContainer.innerHTML = `
+                <div class="summary-item d-flex justify-content-between mb-2">
+                    <span>Subtotal:</span>
+                    <span>Rp ${subtotal.toLocaleString('id-ID')}</span>
+                </div>
+                
+                <hr>
+                <div class="summary-total d-flex justify-content-between">
+                    <span>Total Pembayaran:</span>
+                    <span>Rp ${total.toLocaleString('id-ID')}</span>
+                </div>
+            `;
+            
+            checkoutBtn.disabled = false;
+            
+            // Tambahkan event listener untuk tombol hapus
+            document.querySelectorAll('.remove-item').forEach(button => {
+                button.addEventListener('click', function() {
+                    const itemId = parseInt(this.getAttribute('data-id'));
+                    confirmDelete(itemId);
+                });
+            });
+        }
+
+        // Fungsi untuk konfirmasi penghapusan
+        async function confirmDelete(itemId) {
+            const confirmed = await showCustomConfirm('Yakin ingin menghapus item ini dari keranjang?', 'Hapus Item');
+            
+            if (confirmed) {
+                fetch('page/remove_from_cart.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        menu_id: itemId
+                    })
                 })
-            })
-            .then(response => response.json())
-            .then(data => {
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadCart();
+                        updateCartCount();
+                        showToast('Item dihapus dari keranjang', 'success');
+                    } else {
+                        showToast('Gagal menghapus item', 'error');
+                    }
+                });
+            }
+        }
+
+        // Fungsi untuk update jumlah item di cart counter
+        function updateCartCount() {
+            fetch('page/get_cart_count.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const cartCountElements = document.querySelectorAll('.cart-count');
+                        cartCountElements.forEach(el => {
+                            el.textContent = data.count;
+                            el.style.display = data.count > 0 ? 'inline-block' : 'none';
+                        });
+                    }
+                });
+        }
+
+        // Fungsi untuk checkout
+        function checkout() {
+            // Langsung tampilkan modal pembayaran karena data user sudah di-load di PHP
+            const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+            paymentModal.show();
+        }
+
+        // Fungsi untuk proses pembayaran
+        async function processPayment() {
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const paymentProofInput = paymentMethod === 'Dana' ? 
+                document.getElementById('paymentProof') : 
+                document.getElementById('bankProof');
+            const penerimaanMethod = document.getElementById('penerimaanMethod').value;
+            const deliveryDate = document.getElementById('deliveryDate').value;
+            const orderNotes = document.getElementById('orderNotes').value;
+            
+            // Validasi alamat
+            const useNewAddress = document.getElementById('useNewAddress').checked;
+            const shippingAddress = useNewAddress 
+                ? document.getElementById('newShippingAddress').value
+                : document.querySelector('#accountAddressContainer address').textContent;
+            
+            // Validasi umum
+            if ((paymentMethod === 'Dana' || paymentMethod === 'Transfer Bank') && !paymentProofInput.files[0]) {
+                showToast('Harap upload bukti pembayaran', 'error');
+                return;
+            }
+            
+            if (penerimaanMethod === 'diantar' && !deliveryDate) {
+                showToast('Harap pilih tanggal pengiriman', 'error');
+                return;
+            }
+            
+            if (useNewAddress && !shippingAddress.trim()) {
+                showToast('Harap masukkan alamat pengiriman', 'error');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('payment_method', paymentMethod);
+            formData.append('penerimaan_method', penerimaanMethod);
+            formData.append('delivery_date', deliveryDate);
+            formData.append('notes', orderNotes);
+            formData.append('shipping_address', shippingAddress);
+            formData.append('use_new_address', useNewAddress ? '1' : '0');
+            
+            if (paymentProofInput.files[0]) {
+                formData.append('payment_proof', paymentProofInput.files[0]);
+            }
+            
+            try {
+                const response = await fetch('page/checkout.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
                 if (data.success) {
+                    // Hide payment modal
+                    const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+                    paymentModal.hide();
+                    
+                    // Show success modal
+                    document.getElementById('orderIdDisplay').textContent = '#' + data.order_id;
+                    const successModal = new bootstrap.Modal(document.getElementById('orderSuccessModal'));
+                    successModal.show();
+                    
+                    // Update cart
                     loadCart();
                     updateCartCount();
-                    showToast('Item dihapus dari keranjang');
                 } else {
-                    showToast('Gagal menghapus item', 'error');
+                    showToast('Gagal checkout: ' + data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Terjadi kesalahan saat memproses pembayaran', 'error');
+            }
+        }
+
+        // Inisialisasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCart();
+            document.getElementById('checkout-btn').addEventListener('click', checkout);
+            
+            // Payment method change handler
+            document.getElementById('paymentMethod').addEventListener('change', function() {
+                const method = this.value;
+                document.querySelectorAll('.payment-info').forEach(el => el.classList.add('d-none'));
+                
+                if (method === 'Dana') {
+                    document.getElementById('danaInfo').classList.remove('d-none');
+                } else if (method === 'Transfer Bank') {
+                    document.getElementById('bankInfo').classList.remove('d-none');
+                } else if (method === 'COD') {
+                    document.getElementById('codInfo').classList.remove('d-none');
                 }
             });
-        }
-    }
-
-    // Fungsi untuk checkout
-    async function checkout() {
-        // Langsung tampilkan modal pembayaran karena data user sudah di-load di PHP
-        const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
-        paymentModal.show();
-    }
-
-    // Fungsi untuk proses pembayaran
-        async function processPayment() {
-        const paymentMethod = document.getElementById('paymentMethod').value;
-        const paymentProofInput = paymentMethod === 'Dana' ? 
-            document.getElementById('paymentProof') : 
-            document.getElementById('bankProof');
-        const penerimaanMethod = document.getElementById('penerimaanMethod').value;
-        const deliveryDate = document.getElementById('deliveryDate').value;
-        const orderNotes = document.getElementById('orderNotes').value;
-
-        // Validasi
-        if ((paymentMethod === 'Dana' || paymentMethod === 'Transfer Bank') && !paymentProofInput.files[0]) {
-            showToast('Harap upload bukti pembayaran', 'error');
-            return;
-        }
-        
-        // Pindahkan deklarasi formData ke sini
-        const formData = new FormData();
-        formData.append('payment_method', paymentMethod);
-        formData.append('penerimaan_method', penerimaanMethod);
-        formData.append('delivery_date', deliveryDate);
-        formData.append('notes', orderNotes);
-        
-        if (paymentProofInput.files[0]) {
-            formData.append('payment_proof', paymentProofInput.files[0]);
-        }
-        
-        try {
-            const response = await fetch('page/checkout.php', {
-                method: 'POST',
-                body: formData
+            
+            // Address selection handler
+            document.querySelectorAll('input[name="addressOption"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const accountAddressContainer = document.getElementById('accountAddressContainer');
+                    const newAddressContainer = document.getElementById('newAddressContainer');
+                    
+                    if (this.id === 'useAccountAddress') {
+                        accountAddressContainer.classList.remove('d-none');
+                        newAddressContainer.classList.add('d-none');
+                    } else {
+                        accountAddressContainer.classList.add('d-none');
+                        newAddressContainer.classList.remove('d-none');
+                    }
+                });
             });
             
-            const data = await response.json();
-            
-            if (data.success) {
-                // Hide payment modal
-                const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
-                paymentModal.hide();
-                
-                // Show success modal
-                document.getElementById('orderIdDisplay').textContent = '#' + data.order_id;
-                const successModal = new bootstrap.Modal(document.getElementById('orderSuccessModal'));
-                successModal.show();
-                
-                // Update cart
-                loadCart();
-                updateCartCount();
-            } else {
-                showToast('Gagal checkout: ' + data.message, 'error');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            showToast('Terjadi kesalahan saat memproses pembayaran', 'error');
-        }
-    }
-
-    // Inisialisasi saat halaman dimuat
-    document.addEventListener('DOMContentLoaded', function() {
-        loadCart();
-        document.getElementById('checkout-btn').addEventListener('click', checkout);
-        
-        // Payment method change handler
-        document.getElementById('paymentMethod').addEventListener('change', function() {
-            const method = this.value;
-            document.querySelectorAll('.payment-info').forEach(el => el.classList.add('d-none'));
-            
-            if (method === 'Dana') {
-                document.getElementById('danaInfo').classList.remove('d-none');
-            } else if (method === 'Transfer Bank') {
-                document.getElementById('bankInfo').classList.remove('d-none');
-            } else if (method === 'COD') {
-                document.getElementById('codInfo').classList.remove('d-none');
-            }
+            // Confirm payment button
+            document.getElementById('confirmPayment').addEventListener('click', processPayment);
         });
-        
-        // Confirm payment button
-        document.getElementById('confirmPayment').addEventListener('click', processPayment);
-    });
-    </script>
+</script>
 </body>
 </html>

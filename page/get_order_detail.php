@@ -9,10 +9,14 @@ if (!isset($_SESSION['logged_in'])) {
 $user_id = $_SESSION['user_id'];
 $order_id = $_GET['order_id'];
 
-// Get order info
-$sql = "SELECT id, tanggal, total, payment_method, status, payment_proof 
-        FROM orders 
-        WHERE id = ? AND user_id = ?";
+// Get order info - tambahkan semua field yang diperlukan
+$sql = "SELECT o.id, o.tanggal, o.total, o.payment_method, o.status, o.payment_proof, 
+               o.penerimaanMethod, o.tanggal_diambil_dikirim, o.catatan, 
+               o.shipping_address, o.use_new_address,
+               u.alamat as user_address
+        FROM orders o
+        JOIN users u ON o.user_id = u.id
+        WHERE o.id = ? AND o.user_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ii", $order_id, $user_id);
 $stmt->execute();

@@ -9,12 +9,13 @@
       rel="stylesheet"
     />
     
-    <link rel="stylesheet" href="..//bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../aset/bootstrap/css/bootstrap.min.css">
 </head>
 <body>
     
 <?php
-include "../config.php";
+ob_start();
+include "koneksi.php";
 
 // Cek jika user mencoba akses halaman admin tanpa login
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['role'] !== 'admin') {
@@ -37,11 +38,14 @@ switch($page){
     case "pesanan":
         include "admin_page/pesanan.php";
         break;
+    case "laporan":
+        include "admin_page/laporan.php";
+        break;
     default:
         include "admin_page/home.php";
         break;
 }
+ob_end_flush();
 ?>
-
 </body>
 </html>
